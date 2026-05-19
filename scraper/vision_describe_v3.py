@@ -1,0 +1,224 @@
+"""
+vision_describe_v3.py
+=====================
+Downloads each artwork image locally using requests (with browser
+headers to bypass CDN restrictions), then sends to Gemini Vision
+as a PIL Image object.
+
+SETUP:
+    pip install google-generativeai pillow requests
+
+USAGE:
+    python vision_describe_v3.py
+
+INPUT:  data/artworks.csv
+OUTPUT: data/artworks_final.csv
+"""
+
+import csv
+import time
+import os
+import random
+import io
+from pathlib import Path
+
+import requests
+from PIL import Image
+import google.generativeai as genai
+
+# ── Config ────────────────────────────────────────────────────────────────────
+
+INPUT_FILE  = Path("data/artworks.csv")
+OUTPUT_FILE = Path("data/artworks_final.csv")
+
+DELAY_MIN   = 4.0
+DELAY_MAX   = 7.0
+MAX_RETRIES = 3
+RETRY_WAIT  = 20.0
+
+# Browser headers — makes requests look like a real Chrome browser
+HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/120.0.0.0 Safari/537.36"
+    ),
+    "Referer": "https://artsandculture.google.com/",
+    "Accept": "image/webp,image/apng,image/*,*/*;q=0.8",
+}
+
+VISION_PROMPT = """You are an expert art analyst describing a Nigerian artwork 
+for a museum chatbot called Iranti. Describe what you literally see in this image.
+
+Focus on:
+- Subject matter: what figures, objects, or scenes are depicted
+- Composition: how elements are arranged, foreground/background
+- Colour palette: dominant colours and their mood
+- Medium and texture: visible brushwork, material qualities
+- Style: realistic, abstract, expressionist, traditional, etc.
+- Any cultural symbols, patterns, or iconography visible
+
+Write 3-4 sentences. Be specific and visual. Do not speculate about 
+meaning — only describe what is visible. Do not repeat the title or 
+artist name."""
+
+
+# ── Image download ────────────────────────────────────────────────────────────
+
+def download_image(image_url: str) -> Image.Image | None:
+    """
+    Download image using requests with browser headers.
+    Returns a PIL Image object or None if download fails.
+    """
+    try:
+        response = requests.get(image_url, headers=HEADERS, timeout=20)
+        response.raise_for_status()
+        image = Image.open(io.BytesIO(response.content))
+        # Convert to RGB (handles PNG with alpha channel)
+        image = image.convert("RGB")
+        return image
+    except Exception as e:
+        print(f"    Image download failed: {str(e)[:80]}")
+        return None
+
+
+# ── Gemini Vision call ────────────────────────────────────────────────────────
+
+def describe_artwork(model, image_url: str, title: str) -> str:
+    """
+    Download image and send to Gemini Vision as PIL Image.
+    """
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            # Download image
+            image = download_image(image_url)
+            if image is None:
+                raise Exception("Image download returned None")
+
+            # Send PIL image directly to Gemini
+            response = model.generate_content(
+                [VISION_PROMPT, image],
+                generation_config={
+                    "max_output_tokens": 300,
+                    "temperature": 0.3,
+                }
+            )
+
+            return response.text.strip()
+
+        except Exception as e:
+            error = str(e)[:100]
+            print(f"    Attempt {attempt} failed: {error}")
+            if attempt < MAX_RETRIES:
+                wait = RETRY_WAIT * attempt
+                print(f"    Waiting {wait}s...")
+                time.sleep(wait)
+
+    return ""
+
+
+# ── Main ──────────────────────────────────────────────────────────────────────
+
+def main():
+    # ── API key ───────────────────────────────────────────────────────────
+    api_key = os.environ.get("GEMINI_API_KEY", "")
+    if not api_key:
+        print("Enter your Gemini API key:")
+        api_key = input("API key: ").strip()
+
+    if not api_key:
+        print("ERROR: No API key provided.")
+        return
+
+    genai.configure(api_key=api_key)
+    model = genai.GenerativeModel("gemini-2.0-flash")
+    print("Gemini configured.\n")
+
+    # ── Load CSV ──────────────────────────────────────────────────────────
+    if not INPUT_FILE.exists():
+        print(f"ERROR: {INPUT_FILE} not found.")
+        return
+
+    with open(INPUT_FILE, newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        rows = list(reader)
+        existing_cols = list(reader.fieldnames or [])
+
+    total        = len(rows)
+    already_done = sum(1 for r in rows if r.get("visual_description", "").strip())
+
+    print(f"{'='*60}")
+    print(f"Iranti Vision Descriptor v3")
+    print(f"{'='*60}")
+    print(f"Total:     {total}")
+    print(f"Done:      {already_done}")
+    print(f"To do:     {total - already_done}")
+    print(f"{'='*60}\n")
+
+    # ── Build output columns ──────────────────────────────────────────────
+    new_cols = list(existing_cols)
+    if "visual_description" not in new_cols:
+        if "description" in new_cols:
+            idx = new_cols.index("description") + 1
+            new_cols.insert(idx, "visual_description")
+        else:
+            new_cols.append("visual_description")
+
+    # ── Process ───────────────────────────────────────────────────────────
+    success = 0
+    failed  = 0
+
+    with open(OUTPUT_FILE, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=new_cols)
+        writer.writeheader()
+
+        for i, row in enumerate(rows, 1):
+            title     = row.get("title", "Untitled")[:45]
+            image_url = row.get("image_url", "").strip()
+
+            # Skip already described
+            if row.get("visual_description", "").strip():
+                writer.writerow(row)
+                print(f"[{i}/{total}] {title:<45} — skipping")
+                continue
+
+            print(f"[{i}/{total}] {title:<45}", end=" ", flush=True)
+
+            if not image_url:
+                row["visual_description"] = ""
+                writer.writerow(row)
+                print("✗ (no image URL)")
+                failed += 1
+                continue
+
+            visual = describe_artwork(model, image_url, title)
+            row["visual_description"] = visual
+            writer.writerow(row)
+            f.flush()
+
+            if visual:
+                success += 1
+                print(f"✓")
+                print(f"         {visual[:100]}...")
+            else:
+                failed += 1
+                print(f"✗ (empty)")
+
+            time.sleep(random.uniform(DELAY_MIN, DELAY_MAX))
+
+    # ── Summary ───────────────────────────────────────────────────────────
+    print(f"\n{'='*60}")
+    print(f"Done. ✓ {success + already_done}/{total}  ✗ {failed}")
+    print(f"Output: {OUTPUT_FILE}")
+    print(f"{'='*60}")
+
+    if failed == 0:
+        print(f"\nAll done! Rename to finalize:")
+        print(f"  rename data\\artworks_final.csv artworks.csv")
+        print(f"\nNext: Supabase setup.")
+    else:
+        print(f"\nRun again to retry the {failed} failures.")
+
+
+if __name__ == "__main__":
+    main()

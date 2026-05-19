@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Iranti — Memory of the Collection</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --terra:#C4622D;
+    --brass:#B8882A;
+    --ochre:#D4943A;
+    --ember:#8B3A1F;
+    --lora:'Lora', Georgia, serif;
+    --inter:'Inter', system-ui, sans-serif;
+
+    --bg:           #F5EDE0;
+    --bg-elev:      #FFFDF8;
+    --bg-soft:      #EDE3D4;
+    --bg-tile-ph:   #E4D8C8;
+    --fg:           #2A1F1A;
+    --fg-muted:     #4A4440;
+    --fg-soft:      #7A5C46;
+    --fg-faint:     #9E9488;
+    --border:       #D4C8BC;
+    --border-soft:  rgba(122,92,70,0.16);
+    --border-softer:rgba(122,92,70,0.08);
+    --hover-tint:   rgba(228,216,200,0.5);
+    --pill-bg:      rgba(255,253,248,0.65);
+    --tag-bg:       rgba(42,31,26,0.55);
+    --tag-fg:       #F5EDE0;
+    --collage-fade-1: rgba(245,237,224,0.55);
+    --collage-fade-2: rgba(245,237,224,0.78);
+    --collage-fade-3: rgba(245,237,224,0.96);
+    --collage-fade-4: #F5EDE0;
+    --collage-saturate: 0.18;
+    --collage-sepia: 0.42;
+    --shadow-sm: 0 1px 0 rgba(122,92,70,0.04), 0 18px 40px -28px rgba(42,31,26,0.18);
+    --shadow-focus: 0 1px 0 rgba(122,92,70,0.04), 0 18px 40px -22px rgba(184,136,42,0.35), 0 0 0 4px rgba(184,136,42,0.08);
+    --shadow-hover: 0 18px 36px -28px rgba(42,31,26,0.32);
+    --tab-active-bg: #2A1F1A;
+    --tab-active-fg: #F5EDE0;
+    --tab-active-count: rgba(245,237,224,0.55);
+    --send-fg: #FFFDF8;
+  }
+
+  [data-theme="dark"]{
+    --bg:           #14100B;
+    --bg-elev:      #1F1812;
+    --bg-soft:      #1A1410;
+    --bg-tile-ph:   #2A1F1A;
+    --fg:           #F0E6D6;
+    --fg-muted:     #C4AE96;
+    --fg-soft:      #9C8A75;
+    --fg-faint:     #6A6058;
+    --border:       #2E251D;
+    --border-soft:  rgba(212,200,188,0.10);
+    --border-softer:rgba(212,200,188,0.05);
+    --hover-tint:   rgba(245,237,224,0.04);
+    --pill-bg:      rgba(245,237,224,0.03);
+    --tag-bg:       rgba(245,237,224,0.10);
+    --tag-fg:       #F0E6D6;
+    --collage-fade-1: rgba(20,16,11,0.40);
+    --collage-fade-2: rgba(20,16,11,0.72);
+    --collage-fade-3: rgba(20,16,11,0.94);
+    --collage-fade-4: #14100B;
+    --collage-saturate: 0.22;
+    --collage-sepia: 0.30;
+    --shadow-sm: 0 1px 0 rgba(0,0,0,0.4), 0 18px 40px -22px rgba(0,0,0,0.6);
+    --shadow-focus: 0 0 0 1px rgba(184,136,42,0.4), 0 18px 40px -18px rgba(184,136,42,0.45), 0 0 0 4px rgba(184,136,42,0.10);
+    --shadow-hover: 0 18px 40px -24px rgba(0,0,0,0.7);
+    --tab-active-bg: #B8882A;
+    --tab-active-fg: #14100B;
+    --tab-active-count: rgba(20,16,11,0.55);
+    --send-fg: #14100B;
+  }
+
+  html,body{background:var(--bg);color:var(--fg);font-family:var(--inter);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.65;transition:background-color .35s ease,color .35s ease}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{min-height:100vh;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  button{font:inherit;color:inherit}
+  ::selection{background:rgba(184,136,42,0.25)}
+
+  .page{min-height:100vh;display:flex;flex-direction:column;position:relative}
+
+  .topbar{
+    height:56px;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 28px;
+    position:relative;z-index:5;
+  }
+  .menu-btn{
+    width:34px;height:34px;border-radius:8px;
+    display:flex;align-items:center;justify-content:center;
+    border:1px solid transparent;background:transparent;cursor:pointer;
+    transition:border-color .2s,background .2s;
+  }
+  .menu-btn:hover{border-color:var(--border-soft);background:var(--hover-tint)}
+  .menu-btn span{display:block;width:16px;height:1.5px;background:var(--fg-soft);position:relative}
+  .menu-btn span::before,.menu-btn span::after{
+    content:"";position:absolute;left:0;width:16px;height:1.5px;background:var(--fg-soft);
+  }
+  .menu-btn span::before{top:-5px}
+  .menu-btn span::after{top:5px}
+
+  .museum-mark{
+    display:flex;align-items:center;gap:14px;
+    font-family:var(--inter);font-weight:500;font-size:10px;
+    letter-spacing:0.22em;text-transform:uppercase;color:var(--fg-soft);
+  }
+  .museum-mark .dot{width:5px;height:5px;border-radius:50%;background:var(--brass);box-shadow:0 0 0 4px rgba(184,136,42,0.12)}
+
+  .topbar-right{display:flex;align-items:center;gap:18px}
+  .theme-toggle{
+    width:34px;height:34px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    border:1px solid var(--border);background:var(--bg-elev);
+    cursor:pointer;color:var(--fg-soft);
+    transition:border-color .2s,color .2s,background-color .35s,transform .25s;
+  }
+  .theme-toggle:hover{border-color:var(--brass);color:var(--brass)}
+  .theme-toggle svg{width:15px;height:15px;transition:transform .4s ease}
+  .theme-toggle:hover svg{transform:rotate(20deg)}
+
+  .main{
+    flex:1;display:flex;flex-direction:column;
+    max-width:1180px;width:100%;margin:0 auto;padding:0 32px 72px;
+    position:relative;z-index:2;
+  }
+
+  .collage{
+    position:absolute;inset:0;pointer-events:none;
+    overflow:hidden;z-index:1;
+  }
+  .collage-grid{
+    position:absolute;inset:-2% -2% 28% -2%;
+    display:grid;
+    grid-template-columns:repeat(8,1fr);
+    grid-auto-rows:120px;
+    gap:14px;
+    filter:saturate(var(--collage-saturate)) sepia(var(--collage-sepia));
+    opacity:0.20;
+    transition:filter .35s ease;
+  }
+  .collage-tile{
+    border-radius:6px;overflow:hidden;
+    background-size:cover;background-position:center;
+    background-color:var(--paper, var(--border));
+  }
+  .collage-fade{
+    position:absolute;inset:0;
+    background:linear-gradient(180deg,
+      var(--collage-fade-1) 0%,
+      var(--collage-fade-2) 30%,
+      var(--collage-fade-3) 58%,
+      var(--collage-fade-4) 78%);
+    transition:background .35s ease;
+  }
+
+  .hero{
+    padding-top:96px;
+    text-align:center;
+    display:flex;flex-direction:column;align-items:center;
+  }
+  .hero-eyebrow{
+    font-family:var(--inter);font-weight:500;font-size:10px;
+    letter-spacing:0.32em;text-transform:uppercase;color:var(--brass);
+    display:flex;align-items:center;gap:12px;margin-bottom:28px;
+  }
+  .hero-eyebrow::before,.hero-eyebrow::after{
+    content:"";display:block;width:32px;height:1px;background:rgba(184,136,42,0.4);
+  }
+  .hero h1{
+    font-family:var(--lora);font-style:italic;font-weight:500;
+    font-size:104px;line-height:1;letter-spacing:-0.02em;
+    color:var(--brass);
+    margin-bottom:18px;
+  }
+  .hero-tagline{
+    font-family:var(--inter);font-weight:500;font-size:11px;
+    letter-spacing:0.28em;text-transform:uppercase;color:var(--fg-soft);
+  }
+  .hero-sub{
+    font-family:var(--lora);font-style:italic;font-size:18px;
+    color:var(--fg-muted);margin-top:24px;max-width:540px;
+    line-height:1.7;
+  }
+
+  .input-wrap{
+    margin:48px auto 0;
+    width:100%;max-width:720px;
+    background:var(--bg-elev);
+    border:1px solid var(--border);
+    border-radius:18px;
+    box-shadow:var(--shadow-sm);
+    transition:border-color .25s, box-shadow .25s, background-color .35s;
+    padding:18px 18px 14px 22px;
+  }
+  .input-wrap:focus-within{
+    border-color:var(--brass);
+    box-shadow:var(--shadow-focus);
+  }
+  .input-field{
+    width:100%;border:0;outline:0;background:transparent;
+    font-family:var(--lora);font-style:italic;font-weight:400;
+    font-size:18px;color:var(--fg);
+    padding:6px 4px 14px;
+    resize:none;line-height:1.55;
+    min-height:54px;max-height:160px;
+  }
+  .input-field::placeholder{color:var(--fg-soft);opacity:0.7;font-style:italic}
+  .input-row{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    border-top:1px solid var(--border);
+    padding-top:12px;
+  }
+  .input-tools{display:flex;align-items:center;gap:6px}
+  .tool{
+    height:30px;padding:0 10px;border-radius:8px;
+    display:inline-flex;align-items:center;gap:6px;
+    background:transparent;border:1px solid transparent;
+    color:var(--fg-soft);font-size:12px;font-weight:500;letter-spacing:0.04em;
+    cursor:pointer;transition:background .18s,border-color .18s,color .18s;
+  }
+  .tool:hover{background:var(--hover-tint);color:var(--fg);border-color:var(--border-soft)}
+  .tool svg{width:14px;height:14px;stroke-width:1.6}
+  .tool-pill{
+    border:1px solid var(--border);
+    background:var(--bg-soft);
+  }
+  .send-btn{
+    width:38px;height:38px;border-radius:50%;
+    background:var(--terra);color:var(--send-fg);
+    display:flex;align-items:center;justify-content:center;
+    border:0;cursor:pointer;transition:background .18s,transform .12s;
+  }
+  .send-btn:hover{background:var(--ember)}
+  .send-btn:active{transform:translateY(1px)}
+  .send-btn svg{width:15px;height:15px}
+
+  .prompt-pills{
+    margin:18px auto 0;max-width:720px;
+    display:flex;flex-wrap:wrap;gap:8px;justify-content:center;
+  }
+  .prompt-pill{
+    font-family:var(--lora);font-style:italic;font-size:13px;
+    color:var(--fg-soft);
+    background:var(--pill-bg);
+    border:1px solid var(--border);
+    border-radius:999px;
+    padding:8px 16px;
+    cursor:pointer;transition:border-color .18s,color .18s,background .18s;
+  }
+  .prompt-pill:hover{border-color:var(--brass);color:var(--fg);background:var(--bg-elev)}
+  .prompt-pill .arrow{font-style:normal;color:var(--brass);margin-left:4px}
+
+  .browse{
+    margin-top:88px;
+    position:relative;
+  }
+  .browse-rule{
+    display:flex;align-items:center;gap:18px;
+    margin-bottom:32px;
+    color:var(--fg-soft);
+    font-family:var(--inter);font-weight:500;font-size:10px;
+    letter-spacing:0.3em;text-transform:uppercase;
+  }
+  .browse-rule .line{flex:1;height:1px;background:var(--border-soft)}
+  .browse-rule .label{display:flex;align-items:center;gap:10px}
+  .browse-rule .star{color:var(--brass);font-family:var(--lora);font-style:italic;font-size:14px}
+
+  .browse-head{
+    display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
+    margin-bottom:28px;
+  }
+  .browse-title{
+    font-family:var(--lora);font-style:italic;font-weight:500;
+    font-size:34px;color:var(--fg);line-height:1.15;letter-spacing:-0.01em;
+  }
+  .browse-title em{color:var(--brass);font-style:italic}
+  .browse-sub{
+    font-family:var(--lora);font-style:italic;font-size:14px;color:var(--fg-muted);
+    max-width:380px;text-align:right;line-height:1.6;
+  }
+
+  .cat-tabs{
+    display:flex;flex-wrap:wrap;gap:6px;
+    border-bottom:1px solid var(--border-soft);
+    padding-bottom:14px;
+    margin-bottom:28px;
+    align-items:center;
+  }
+  .cat-tab{
+    position:relative;
+    background:transparent;border:0;cursor:pointer;
+    font-family:var(--inter);font-weight:500;font-size:12px;letter-spacing:0.04em;
+    color:var(--fg-muted);
+    padding:8px 14px;border-radius:999px;
+    display:inline-flex;align-items:center;gap:8px;
+    transition:color .18s,background .18s;
+  }
+  .cat-tab .count{
+    font-family:var(--inter);font-weight:400;font-size:10px;color:var(--fg-faint);
+    letter-spacing:0.04em;
+  }
+  .cat-tab:hover{color:var(--fg);background:var(--hover-tint)}
+  .cat-tab.active{
+    color:var(--tab-active-fg);background:var(--tab-active-bg);
+  }
+  .cat-tab.active .count{color:var(--tab-active-count)}
+  .cat-divider{width:1px;height:14px;background:var(--border-soft);margin:0 6px}
+
+  .tile-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+  }
+  .tile{
+    cursor:pointer;
+    background:var(--bg-elev);
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+    transition:border-color .2s,transform .25s,box-shadow .25s,background-color .35s;
+    display:flex;flex-direction:column;
+    text-align:left;
+    padding:0;
+  }
+  .tile:hover{
+    border-color:var(--brass);
+    transform:translateY(-2px);
+    box-shadow:var(--shadow-hover);
+  }
+  .tile-img{
+    aspect-ratio:4/5;
+    background-size:cover;background-position:center;
+    background-color:var(--bg-tile-ph);
+    position:relative;
+    border-bottom:1px solid var(--border);
+  }
+  .tile.feature{grid-column:span 2;grid-row:span 2}
+  .tile.feature .tile-img{aspect-ratio:auto;height:100%;min-height:0}
+  .tile.feature{display:flex;flex-direction:column}
+  .tile.wide{grid-column:span 2}
+  .tile.wide .tile-img{aspect-ratio:8/5}
+
+  .tile-tag{
+    position:absolute;top:12px;left:12px;
+    font-family:var(--inter);font-weight:500;font-size:9px;
+    letter-spacing:0.22em;text-transform:uppercase;
+    color:var(--tag-fg);
+    background:var(--tag-bg);
+    backdrop-filter:blur(6px);
+    padding:5px 9px;border-radius:4px;
+  }
+  .tile-meta{
+    padding:14px 16px 16px;
+    display:flex;flex-direction:column;gap:6px;
+  }
+  .tile-title{
+    font-family:var(--lora);font-style:italic;font-size:16px;
+    color:var(--fg);line-height:1.25;
+  }
+  .tile-sub{
+    font-family:var(--inter);font-weight:400;font-size:11px;
+    color:var(--fg-muted);letter-spacing:0.04em;
+  }
+  .tile-foot{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-top:6px;
+    font-family:var(--inter);font-size:10px;font-weight:500;
+    letter-spacing:0.18em;text-transform:uppercase;color:var(--fg-soft);
+  }
+  .tile-foot .ask{
+    color:var(--brass);
+    display:inline-flex;align-items:center;gap:4px;
+  }
+  .tile-foot .ask .ar{font-family:var(--lora);font-style:italic;text-transform:none;letter-spacing:0;font-size:12px}
+
+  .tile-img.placeholder{
+    background:repeating-linear-gradient(135deg,var(--bg-tile-ph) 0 12px,var(--bg-soft) 12px 24px);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .tile-img.placeholder span{
+    font-family:'JetBrains Mono','SFMono-Regular',monospace;
+    font-size:10px;letter-spacing:0.16em;text-transform:uppercase;
+    color:var(--fg-soft);background:var(--bg-elev);
+    padding:5px 9px;border-radius:4px;
+  }
+
+  .curiosity{
+    margin-top:64px;
+    border-top:1px solid var(--border-soft);
+    padding-top:32px;
+    display:grid;grid-template-columns:200px 1fr;gap:32px;
+  }
+  .cur-label{
+    font-family:var(--inter);font-weight:500;font-size:10px;
+    letter-spacing:0.28em;text-transform:uppercase;color:var(--brass);
+  }
+  .cur-questions{display:flex;flex-direction:column;gap:2px}
+  .cur-q{
+    display:flex;align-items:baseline;justify-content:space-between;
+    padding:14px 0;
+    border-bottom:1px solid var(--border-softer);
+    cursor:pointer;
+    transition:padding-left .25s,color .2s;
+    background:transparent;border-left:0;border-right:0;border-top:0;
+    text-align:left;width:100%;
+  }
+  .cur-q:last-child{border-bottom:0}
+  .cur-q:hover{padding-left:8px}
+  .cur-q:hover .cur-q-text{color:var(--fg)}
+  .cur-q:hover .cur-q-arrow{color:var(--brass);transform:translateX(4px)}
+  .cur-q-text{
+    font-family:var(--lora);font-style:italic;font-size:18px;
+    color:var(--fg-muted);transition:color .2s;line-height:1.4;
+  }
+  .cur-q-arrow{
+    font-family:var(--lora);font-style:italic;font-size:18px;
+    color:rgba(184,136,42,0.5);transition:color .2s,transform .2s;
+    display:inline-block;
+  }
+
+  .foothint{
+    margin-top:80px;text-align:center;
+    font-family:var(--inter);font-size:10px;font-weight:400;
+    letter-spacing:0.22em;text-transform:uppercase;color:var(--fg-faint);
+    display:flex;align-items:center;gap:14px;justify-content:center;
+  }
+  .foothint .bar{width:24px;height:1px;background:var(--border-soft)}
+
+  @media (max-width:980px){
+    .tile-grid{grid-template-columns:repeat(2,1fr) !important}
+    .tile.feature{grid-column:span 2;grid-row:auto}
+    .tile.wide{grid-column:span 2}
+    .browse-head{flex-direction:column;align-items:flex-start}
+    .browse-sub{text-align:left}
+    .curiosity{grid-template-columns:1fr}
+    .hero h1{font-size:78px}
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="collage" aria-hidden="true">
+    <div class="collage-grid" id="collage-grid"></div>
+    <div class="collage-fade"></div>
+  </div>
+
+  <div class="topbar">
+    <button class="menu-btn" aria-label="Menu"><span></span></button>
+    <div class="topbar-right">
+      <div class="museum-mark">
+        <span class="dot"></span>
+        <span>Yemisi Shyllon Museum of Art</span>
+      </div>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+        <svg id="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 14.5A8 8 0 019.5 4 8 8 0 1020 14.5z" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <main class="main">
+    <section class="hero">
+      <div class="hero-eyebrow">Iranti · Memory of the Collection</div>
+      <h1>Iranti</h1>
+      <div class="hero-tagline">Reconnect with your Ayanmò</div>
+      <div class="hero-sub">
+        I hold what our records carry about the works here — their origins, their makers, their journeys to this place.
+      </div>
+
+      <div class="input-wrap">
+        <textarea
+          id="ask-input"
+          class="input-field"
+          placeholder="Ask about any artwork, artist, or tradition in our collection…"
+          rows="1"></textarea>
+        <div class="input-row">
+          <div class="input-tools">
+            <button class="tool tool-pill">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14" stroke-linecap="round" /></svg>
+              Add context
+            </button>
+            <button class="tool">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="7" /><path d="M21 21l-5-5" stroke-linecap="round" /></svg>
+              Search collection
+            </button>
+            <button class="tool">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18" /></svg>
+              English
+            </button>
+          </div>
+          <button class="send-btn" aria-label="Ask Iranti">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l14-7-7 14-2-5-5-2z" stroke-linejoin="round" /></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="prompt-pills" id="prompt-pills"></div>
+    </section>
+
+    <section class="browse">
+      <div class="browse-rule">
+        <div class="line"></div>
+        <div class="label"><span class="star">✦</span> Or wander the collection</div>
+        <div class="line"></div>
+      </div>
+
+      <div class="browse-head">
+        <div class="browse-title">What is <em>kept</em> here.</div>
+        <div class="browse-sub">
+          Eight rooms of the catalogue. Choose one and the works will arrange themselves —
+          or ask Iranti and the right one will arrive.
+        </div>
+      </div>
+
+      <div class="cat-tabs" id="cat-tabs" role="tablist"></div>
+      <div class="tile-grid" id="tile-grid"></div>
+    </section>
+
+    <section class="curiosity">
+      <div class="cur-label">Questions you<br>didn't know<br>you had</div>
+      <div class="cur-questions" id="cur-questions"></div>
+    </section>
+
+    <div class="foothint">
+      <span class="bar"></span>
+      <span>Iranti remembers · It does not declare</span>
+      <span class="bar"></span>
+    </div>
+  </main>
+</div>
+
+<script>
+const IRANTI_CATEGORIES = [
+  { id: "all",          label: "All works",            count: 248 },
+  { id: "bronze",       label: "Benin Bronzes",        count: 34 },
+  { id: "mask",         label: "Masks & Headdresses",  count: 41 },
+  { id: "terracotta",   label: "Nok Terracotta",       count: 22 },
+  { id: "textile",      label: "Textiles & Adire",     count: 38 },
+  { id: "sacred",       label: "Sacred Objects",       count: 27 },
+  { id: "contemporary", label: "Contemporary",         count: 56 },
+  { id: "photo",        label: "Photography",          count: 30 }
+];
+
+const IRANTI_WORKS = {
+  bronze: [
+    { id:"b1", title:"Head of an Oba", maker:"Edo / Benin Kingdom", date:"16th c.", tag:"Bronze",
+      img:"https://images.metmuseum.org/CRDImages/aa/original/DP231460.jpg", span:"feature" },
+    { id:"b2", title:"Plaque, Warrior with Attendants", maker:"Edo / Benin Kingdom", date:"16–17th c.", tag:"Bronze",
+      img:"https://images.metmuseum.org/CRDImages/aa/original/DP231462.jpg" },
+    { id:"b3", title:"Hip Pendant Mask, Iyoba", maker:"Edo / Benin Kingdom", date:"16th c.", tag:"Ivory",
+      img:"https://images.metmuseum.org/CRDImages/aa/original/DP231458.jpg" },
+    { id:"b4", title:"Memorial Head of a King", maker:"Edo / Benin Kingdom", date:"18th c.", tag:"Bronze",
+      img:"https://images.metmuseum.org/CRDImages/aa/original/DP-13207-001.jpg" },
+    { id:"b5", title:"Cock figure for ancestral altar", maker:"Edo / Benin Kingdom", date:"18th c.", tag:"Bronze",
+      img:"https://ids.si.edu/ids/deliveryService?id=NMAfA-2005-6-9_001" }
+  ],
+  mask: [
+    { id:"m1", title:"Gelede Mask", maker:"Yoruba peoples", date:"early 20th c.", tag:"Wood, pigment",
+      img:"https://images.metmuseum.org/CRDImages/aa/original/DP231474.jpg", span:"feature" },
+    { id:"m2", title:"Epa Headdress, Olumeye", maker:"Yoruba, Ekiti region", date:"c.1920", tag:"Wood",
+      img:"https://images.metmuseum.org/CRDImages/aa/original/DP231468.jpg" },
+    { id:"m3", title:"Igbo Mmwo Maiden Mask", maker:"Igbo peoples", date:"early 20th c.", tag:"Wood, kaolin",
+      img:"https://images.metmuseum.org/CRDImages/aa/original/DP231472.jpg" },
+    { id:"m4", title:"Ekpe Society Mask", maker:"Cross River, Ejagham", date:"19th c.", tag:"Wood, skin",
+      img:"https://ids.si.edu/ids/deliveryService?id=NMAfA-79-16-104_002" },
+    { id:"m5", title:"Headdress, Egungun", maker:"Yoruba peoples", date:"20th c.", tag:"Cloth, beads",
+      img:"https://images.metmuseum.org/CRDImages/aa/original/DP231476.jpg" }
+  ],
+  terracotta: [
+    { id:"t1", title:"Standing Figure", maker:"Nok civilisation", date:"c. 500 BCE – 200 CE", tag:"Terracotta",
+      img:"https://images.metmuseum.org/CRDImages/aa/original/DP231454.jpg", span:"feature" },
+    { id:"t2", title:"Equestrian Figure", maker:"Djenné, Inland Niger Delta", date:"13–15th c.", tag:"Terracotta",
+      img:"https://images.metmuseum.org/CRDImages/aa/original/DP231456.jpg" },
+    { id:"t3", title:"Seated Dignitary", maker:"Nok civilisation", date:"c. 500 BCE", tag:"Terracotta",
+      img:"https://images.metmuseum.org/CRDImages/aa/original/DP231452.jpg" },
+    { id:"t4", title:"Head of a Ruler", maker:"Ife, Yoruba", date:"12–14th c.", tag:"Terracotta", span:"wide",
+      img:"https://images.metmuseum.org/CRDImages/aa/original/DP231450.jpg" }
+  ],
+  textile: [
+    { id:"x1", title:"Adire Eleko, Olokun design", maker:"Yoruba, Abeokuta", date:"mid-20th c.", tag:"Indigo, cassava",
+      img:"https://ids.si.edu/ids/deliveryService?id=NMAfA-2007-12-2_001", span:"feature" },
+    { id:"x2", title:"Aso Oke, Etu pattern", maker:"Yoruba weavers, Iseyin", date:"20th c.", tag:"Cotton, silk",
+      img:"https://ids.si.edu/ids/deliveryService?id=NMAfA-85-15-1_001" },
+    { id:"x3", title:"Akwete Cloth", maker:"Igbo, Akwete", date:"20th c.", tag:"Cotton",
+      img:"https://ids.si.edu/ids/deliveryService?id=NMAfA-85-15-12_001" },
+    { id:"x4", title:"Adire Alabere, Stitched", maker:"Yoruba, Ibadan", date:"1960s", tag:"Indigo, raffia",
+      img:"https://ids.si.edu/ids/deliveryService?id=NMAfA-86-12-22_001" },
+    { id:"x5", title:"Wrapper, Akwete weave", maker:"Igbo peoples", date:"1970s", tag:"Cotton",
+      img:"https://ids.si.edu/ids/deliveryService?id=NMAfA-85-15-15_001" }
+  ],
+  sacred: [
+    { id:"s1", title:"Iroke Ifa, Divination Tapper", maker:"Yoruba peoples", date:"19th c.", tag:"Ivory",
+      img:"https://images.metmuseum.org/CRDImages/aa/original/DP231480.jpg", span:"feature" },
+    { id:"s2", title:"Agere Ifa, Divination Cup", maker:"Yoruba peoples", date:"19th c.", tag:"Wood",
+      img:"https://images.metmuseum.org/CRDImages/aa/original/DP231482.jpg" },
+    { id:"s3", title:"Opon Ifa, Divination Tray", maker:"Yoruba peoples", date:"19th c.", tag:"Wood",
+      img:"https://images.metmuseum.org/CRDImages/aa/original/DP231484.jpg" },
+    { id:"s4", title:"Eshu Staff", maker:"Yoruba peoples", date:"early 20th c.", tag:"Wood, beads",
+      img:"https://images.metmuseum.org/CRDImages/aa/original/DP231486.jpg" }
+  ],
+  contemporary: [
+    { id:"c1", title:"Tutu (study)", maker:"Ben Enwonwu", date:"1973", tag:"Oil on canvas", span:"feature" },
+    { id:"c2", title:"Drummers of My Father's Compound", maker:"Bruce Onobrakpeya", date:"1989", tag:"Etching" },
+    { id:"c3", title:"Man with Hourglass Drum", maker:"Yusuf Grillo", date:"1994", tag:"Oil on canvas" },
+    { id:"c4", title:"Untitled, Lagos series", maker:"Peju Alatise", date:"2018", tag:"Mixed media" },
+    { id:"c5", title:"The Storyteller", maker:"Nike Davies-Okundaye", date:"2010", tag:"Adire on cotton" }
+  ],
+  photo: [
+    { id:"p1", title:"Sitter at Studio Mama", maker:"J.D. 'Okhai Ojeikere", date:"1970", tag:"Gelatin silver", span:"feature" },
+    { id:"p2", title:"Onile Gogoro hairstyle", maker:"J.D. 'Okhai Ojeikere", date:"1975", tag:"Gelatin silver" },
+    { id:"p3", title:"Modupe", maker:"Solomon Osagie Alonge", date:"1948", tag:"Gelatin silver" },
+    { id:"p4", title:"Iya Agba", maker:"Anonymous, Ibadan studio", date:"c.1962", tag:"Gelatin silver" }
+  ]
+};
+
+IRANTI_WORKS.all = [
+  IRANTI_WORKS.bronze[0],
+  IRANTI_WORKS.mask[1],
+  IRANTI_WORKS.sacred[0],
+  IRANTI_WORKS.terracotta[1],
+  IRANTI_WORKS.textile[0],
+  IRANTI_WORKS.photo[1],
+  IRANTI_WORKS.contemporary[1],
+  IRANTI_WORKS.bronze[2]
+].map((w, i) => ({ ...w, span: i === 0 ? "feature" : (i === 5 ? "wide" : undefined) }));
+
+const IRANTI_PROMPT_PILLS = [
+  { text: "Tell me about the oldest work" },
+  { text: "What traditions does this collection hold?" },
+  { text: "I don't know where to begin" },
+  { text: "Explore the collection", arrow: true }
+];
+
+const IRANTI_CURIOSITY = [
+  "How did the Nok civilisation disappear?",
+  "What were Gelede masks used for?",
+  "Why is the Iyoba pendant carved from ivory?",
+  "Which artists carry the Adire tradition today?",
+  "What does the Iroke Ifa tap against?"
+];
+
+const SUN_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4" /><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4l1.4-1.4M17 7l1.4-1.4" /></svg>';
+const MOON_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 019.5 4 8 8 0 1020 14.5z" /></svg>';
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  localStorage.setItem("iranti-theme", theme);
+  const toggle = document.getElementById("theme-toggle");
+  toggle.innerHTML = theme === "dark" ? SUN_SVG : MOON_SVG;
+  toggle.setAttribute("aria-label", theme === "dark" ? "Switch to light mode" : "Switch to dark mode");
+  toggle.setAttribute("title", theme === "dark" ? "Light mode" : "Dark mode");
+}
+
+function initTheme() {
+  const stored = localStorage.getItem("iranti-theme") || "light";
+  applyTheme(stored);
+  document.getElementById("theme-toggle").addEventListener("click", () => {
+    const current = document.documentElement.getAttribute("data-theme") || "light";
+    applyTheme(current === "dark" ? "light" : "dark");
+  });
+}
+
+function renderCollage() {
+  const sources = [
+    ...IRANTI_WORKS.bronze, ...IRANTI_WORKS.mask, ...IRANTI_WORKS.terracotta,
+    ...IRANTI_WORKS.textile, ...IRANTI_WORKS.sacred
+  ].slice(0, 16);
+  const spans = [
+    ["span 2","span 2"], ["span 1","span 1"], ["span 2","span 2"], ["span 1","span 1"],
+    ["span 1","span 2"], ["span 1","span 1"], ["span 2","span 1"], ["span 1","span 1"],
+    ["span 1","span 1"], ["span 2","span 1"], ["span 1","span 2"], ["span 2","span 2"],
+    ["span 1","span 1"], ["span 1","span 1"], ["span 2","span 1"], ["span 1","span 1"]
+  ];
+  const grid = document.getElementById("collage-grid");
+  grid.innerHTML = sources.map((s, i) => {
+    const [c, r] = spans[i] || ["span 1","span 1"];
+    const bg = s.img ? `background-image:url('${s.img}')` : "";
+    return `<div class="collage-tile" style="grid-column:${c};grid-row:${r};${bg}"></div>`;
+  }).join("");
+}
+
+function renderPromptPills() {
+  const wrap = document.getElementById("prompt-pills");
+  wrap.innerHTML = IRANTI_PROMPT_PILLS.map(p => {
+    const obj = typeof p === "string" ? { text: p } : p;
+    const arrow = obj.arrow ? '<span class="arrow"> →</span>' : '';
+    return `<button class="prompt-pill">${escapeHtml(obj.text)}${arrow}</button>`;
+  }).join("");
+  wrap.querySelectorAll(".prompt-pill").forEach((btn, i) => {
+    btn.addEventListener("click", () => {
+      const obj = IRANTI_PROMPT_PILLS[i];
+      const text = typeof obj === "string" ? obj : obj.text;
+      const ta = document.getElementById("ask-input");
+      ta.value = text;
+      ta.focus();
+      autoGrow(ta);
+    });
+  });
+}
+
+function renderCategoryTabs(active) {
+  const wrap = document.getElementById("cat-tabs");
+  const parts = [];
+  IRANTI_CATEGORIES.forEach((c, i) => {
+    const cls = "cat-tab" + (active === c.id ? " active" : "");
+    parts.push(`<button class="${cls}" role="tab" aria-selected="${active === c.id}" data-cat="${c.id}">${escapeHtml(c.label)}<span class="count">${c.count}</span></button>`);
+    if (i === 0) parts.push('<div class="cat-divider"></div>');
+  });
+  wrap.innerHTML = parts.join("");
+  wrap.querySelectorAll(".cat-tab").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id = btn.getAttribute("data-cat");
+      renderCategoryTabs(id);
+      renderTiles(id);
+    });
+  });
+}
+
+function renderTiles(catId) {
+  const works = IRANTI_WORKS[catId] || [];
+  const grid = document.getElementById("tile-grid");
+  grid.innerHTML = works.map(w => {
+    const cls = "tile" + (w.span === "feature" ? " feature" : w.span === "wide" ? " wide" : "");
+    const hasImg = !!w.img;
+    const imgClass = "tile-img" + (hasImg ? "" : " placeholder");
+    const imgStyle = hasImg ? ` style="background-image:url('${w.img}')"` : "";
+    const placeholderTxt = !hasImg ? `<span>${escapeHtml((w.tag || "Artwork").toUpperCase())}</span>` : "";
+    const tag = w.tag && hasImg ? `<span class="tile-tag">${escapeHtml(w.tag)}</span>` : "";
+    return `
+      <article class="${cls}">
+        <div class="${imgClass}"${imgStyle}>${placeholderTxt}${tag}</div>
+        <div class="tile-meta">
+          <div class="tile-title">${escapeHtml(w.title)}</div>
+          <div class="tile-sub">${escapeHtml(w.maker)} · ${escapeHtml(w.date)}</div>
+          <div class="tile-foot">
+            <span>View</span>
+            <span class="ask"><span class="ar">Ask Iranti</span> →</span>
+          </div>
+        </div>
+      </article>`;
+  }).join("");
+}
+
+function renderCuriosity() {
+  const wrap = document.getElementById("cur-questions");
+  wrap.innerHTML = IRANTI_CURIOSITY.map(q =>
+    `<button class="cur-q"><span class="cur-q-text">${escapeHtml(q)}</span><span class="cur-q-arrow">→</span></button>`
+  ).join("");
+  wrap.querySelectorAll(".cur-q").forEach((btn, i) => {
+    btn.addEventListener("click", () => {
+      const ta = document.getElementById("ask-input");
+      ta.value = IRANTI_CURIOSITY[i];
+      ta.focus();
+      autoGrow(ta);
+      ta.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  });
+}
+
+function autoGrow(ta) {
+  ta.style.height = "auto";
+  ta.style.height = Math.min(ta.scrollHeight, 160) + "px";
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"
+  })[c]);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  initTheme();
+  renderCollage();
+  renderPromptPills();
+  renderCategoryTabs("all");
+  renderTiles("all");
+  renderCuriosity();
+  const ta = document.getElementById("ask-input");
+  ta.addEventListener("input", () => autoGrow(ta));
+});
+</script>
+
+</body>
+</html>

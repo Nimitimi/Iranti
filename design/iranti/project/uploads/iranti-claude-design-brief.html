@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iranti — Claude Design Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ivory:      #F5EDE0;
+  --ivory-2:    #EDE3D4;
+  --ivory-3:    #E4D8C8;
+  --dust-mid:   #C4AE96;
+  --earth:      #7A5C46;
+  --aged-black: #2A1F1A;
+  --terra:      #C4622D;
+  --brass:      #B8882A;
+  --ochre:      #D4943A;
+  --ember:      #8B3A1F;
+  --fog:        #E8E0D8;
+  --dust:       #9E9488;
+  --dark-dust:  #4A4440;
+  --paper:      #D4C8BC;
+  --sidebar-bg: #1A1008;
+  --lora: 'Lora', Georgia, serif;
+  --inter: 'Inter', system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--aged-black);
+  color: var(--ivory);
+  font-family: var(--inter);
+  font-size: 14px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Layout ── */
+.brief {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 80px 48px 120px;
+}
+
+/* ── Cover ── */
+.cover {
+  padding: 80px 0 100px;
+  border-bottom: 1px solid rgba(212,200,188,0.1);
+  margin-bottom: 80px;
+}
+
+.cover-label {
+  font-family: var(--inter);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--brass);
+  margin-bottom: 24px;
+}
+
+.cover-title {
+  font-family: var(--lora);
+  font-size: 72px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ivory);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+.cover-title em {
+  color: var(--brass);
+}
+
+.cover-subtitle {
+  font-family: var(--inter);
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--dust);
+  letter-spacing: 0.08em;
+  margin-bottom: 48px;
+}
+
+.cover-meta {
+  display: flex;
+  gap: 48px;
+}
+
+.meta-item {}
+
+.meta-label {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(158,148,136,0.5);
+  margin-bottom: 4px;
+}
+
+.meta-value {
+  font-family: var(--lora);
+  font-size: 14px;
+  font-style: italic;
+  color: var(--dust-mid);
+}
+
+/* ── Section ── */
+.section {
+  margin-bottom: 72px;
+  padding-bottom: 72px;
+  border-bottom: 1px solid rgba(212,200,188,0.06);
+}
+
+.section:last-child {
+  border-bottom: none;
+}
+
+.section-label {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--terra);
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-family: var(--lora);
+  font-size: 32px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ivory);
+  line-height: 1.2;
+  margin-bottom: 28px;
+  letter-spacing: -0.01em;
+}
+
+.section-body {
+  color: rgba(245,237,224,0.65);
+  font-weight: 300;
+  line-height: 1.8;
+}
+
+.section-body p {
+  margin-bottom: 16px;
+}
+
+.section-body p:last-child {
+  margin-bottom: 0;
+}
+
+.section-body strong {
+  color: var(--ivory);
+  font-weight: 500;
+}
+
+.section-body em {
+  font-family: var(--lora);
+  font-style: italic;
+  color: var(--dust-mid);
+}
+
+/* ── Quote block ── */
+.quote-block {
+  border-left: 2px solid var(--brass);
+  padding: 20px 24px;
+  margin: 28px 0;
+  background: rgba(245,237,224,0.03);
+  border-radius: 0 8px 8px 0;
+}
+
+.quote-text {
+  font-family: var(--lora);
+  font-size: 17px;
+  font-style: italic;
+  color: var(--ivory);
+  line-height: 1.75;
+  margin-bottom: 8px;
+}
+
+.quote-attr {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(184,136,42,0.5);
+}
+
+/* ── Colour palette ── */
+.palette-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin: 28px 0;
+}
+
+.swatch {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(212,200,188,0.08);
+}
+
+.swatch-colour {
+  height: 56px;
+}
+
+.swatch-info {
+  padding: 8px 10px;
+  background: rgba(245,237,224,0.03);
+}
+
+.swatch-name {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ivory);
+  margin-bottom: 2px;
+}
+
+.swatch-hex {
+  font-family: monospace;
+  font-size: 10px;
+  color: var(--dust);
+}
+
+.swatch-role {
+  font-size: 10px;
+  color: rgba(158,148,136,0.5);
+  margin-top: 2px;
+}
+
+/* ── Type specimen ── */
+.type-specimen {
+  background: var(--ivory-2);
+  border-radius: 12px;
+  padding: 28px 32px;
+  margin: 28px 0;
+}
+
+.specimen-label {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--earth);
+  margin-bottom: 10px;
+}
+
+.specimen-display {
+  font-family: var(--lora);
+  font-size: 40px;
+  font-style: italic;
+  color: var(--brass);
+  line-height: 1;
+  margin-bottom: 16px;
+}
+
+.specimen-body-lora {
+  font-family: var(--lora);
+  font-size: 16px;
+  color: var(--aged-black);
+  line-height: 1.85;
+  margin-bottom: 16px;
+}
+
+.specimen-ui {
+  font-family: var(--inter);
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--earth);
+  letter-spacing: 0.04em;
+}
+
+/* ── Rules list ── */
+.rules {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 20px 0;
+}
+
+.rule {
+  display: flex;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 6px;
+  align-items: flex-start;
+}
+
+.rule-do {
+  background: rgba(29,158,117,0.08);
+  border: 1px solid rgba(29,158,117,0.15);
+}
+
+.rule-dont {
+  background: rgba(196,98,45,0.06);
+  border: 1px solid rgba(196,98,45,0.12);
+}
+
+.rule-icon {
+  font-size: 11px;
+  font-weight: 500;
+  flex-shrink: 0;
+  padding-top: 1px;
+}
+
+.rule-do .rule-icon { color: #1D9E75; }
+.rule-dont .rule-icon { color: var(--terra); }
+
+.rule-text {
+  font-size: 13px;
+  color: rgba(245,237,224,0.6);
+  line-height: 1.55;
+}
+
+.rule-do .rule-text { color: rgba(245,237,224,0.65); }
+
+/* ── Cards ── */
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.card {
+  padding: 16px 18px;
+  border: 1px solid rgba(212,200,188,0.08);
+  border-radius: 8px;
+  background: rgba(245,237,224,0.02);
+}
+
+.card-label {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brass);
+  margin-bottom: 8px;
+}
+
+.card-title {
+  font-family: var(--lora);
+  font-size: 15px;
+  font-style: italic;
+  color: var(--ivory);
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+.card-text {
+  font-size: 12px;
+  color: rgba(158,148,136,0.7);
+  line-height: 1.6;
+}
+
+/* ── System prompt block ── */
+.prompt-block {
+  background: rgba(245,237,224,0.03);
+  border: 1px solid rgba(212,200,188,0.08);
+  border-radius: 10px;
+  padding: 24px 28px;
+  margin: 24px 0;
+  font-family: var(--lora);
+  font-size: 14px;
+  font-style: italic;
+  color: rgba(245,237,224,0.55);
+  line-height: 1.85;
+}
+
+.prompt-block strong {
+  color: var(--ivory);
+  font-style: normal;
+  font-weight: 500;
+  font-family: var(--inter);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 10px;
+  color: var(--brass);
+}
+
+/* ── Layout diagram ── */
+.layout-diagram {
+  background: rgba(245,237,224,0.02);
+  border: 1px solid rgba(212,200,188,0.08);
+  border-radius: 10px;
+  padding: 28px;
+  margin: 24px 0;
+  display: grid;
+  grid-template-columns: 200px 1fr 280px;
+  gap: 8px;
+  height: 280px;
+}
+
+.layout-panel {
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  padding: 14px 16px;
+  font-size: 11px;
+}
+
+.layout-panel-label {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  opacity: 0.6;
+}
+
+.layout-panel-name {
+  font-family: var(--lora);
+  font-size: 14px;
+  font-style: italic;
+  margin-bottom: 6px;
+}
+
+.layout-panel-detail {
+  font-size: 11px;
+  opacity: 0.5;
+  line-height: 1.6;
+}
+
+.lp-sidebar {
+  background: rgba(26,16,8,0.8);
+  border: 1px solid rgba(184,136,42,0.1);
+}
+
+.lp-sidebar .layout-panel-label { color: var(--brass); }
+.lp-sidebar .layout-panel-name { color: var(--brass); }
+.lp-sidebar .layout-panel-detail { color: var(--dust); }
+
+.lp-chat {
+  background: rgba(245,237,224,0.04);
+  border: 1px solid rgba(212,200,188,0.1);
+}
+
+.lp-chat .layout-panel-label { color: var(--terra); }
+.lp-chat .layout-panel-name { color: var(--ivory); }
+.lp-chat .layout-panel-detail { color: var(--dust); }
+
+.lp-artwork {
+  background: rgba(184,136,42,0.04);
+  border: 1px solid rgba(184,136,42,0.1);
+}
+
+.lp-artwork .layout-panel-label { color: var(--brass); }
+.lp-artwork .layout-panel-name { color: var(--ivory); }
+.lp-artwork .layout-panel-detail { color: var(--dust); }
+
+/* ── Curiosity mechanisms ── */
+.mechanism {
+  display: flex;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(212,200,188,0.06);
+}
+
+.mechanism:last-child { border-bottom: none; }
+
+.mechanism-num {
+  font-family: var(--lora);
+  font-size: 24px;
+  font-style: italic;
+  color: rgba(184,136,42,0.25);
+  min-width: 32px;
+  line-height: 1;
+  padding-top: 2px;
+}
+
+.mechanism-body {}
+
+.mechanism-title {
+  font-family: var(--lora);
+  font-size: 15px;
+  font-style: italic;
+  color: var(--ivory);
+  margin-bottom: 4px;
+}
+
+.mechanism-desc {
+  font-size: 12px;
+  color: rgba(158,148,136,0.7);
+  line-height: 1.65;
+}
+
+/* ── Section index ── */
+.index-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin: 24px 0;
+}
+
+.index-item {
+  padding: 12px 16px;
+  border: 1px solid rgba(212,200,188,0.08);
+  border-radius: 6px;
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+}
+
+.index-num {
+  font-family: var(--lora);
+  font-size: 12px;
+  font-style: italic;
+  color: rgba(184,136,42,0.4);
+  min-width: 24px;
+}
+
+.index-name {
+  font-size: 12px;
+  color: rgba(245,237,224,0.55);
+}
+
+.index-status {
+  margin-left: auto;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(29,158,117,0.6);
+}
+
+/* ── Divider ── */
+.divider {
+  height: 1px;
+  background: rgba(212,200,188,0.06);
+  margin: 48px 0;
+}
+
+/* ── Instruction block ── */
+.instruction {
+  background: rgba(196,98,45,0.06);
+  border: 1px solid rgba(196,98,45,0.15);
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin: 24px 0;
+}
+
+.instruction-label {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--terra);
+  margin-bottom: 8px;
+}
+
+.instruction-text {
+  font-size: 13px;
+  color: rgba(245,237,224,0.7);
+  line-height: 1.7;
+}
+
+.instruction-text strong {
+  color: var(--ivory);
+  font-weight: 500;
+}
+</style>
+</head>
+<body>
+<div class="brief">
+
+  <!-- ── COVER ── -->
+  <div class="cover">
+    <div class="cover-label">Claude Design Brief — Complete Project Context</div>
+    <div class="cover-title"><em>Iranti</em></div>
+    <div class="cover-subtitle">Museum AI Chatbot · Yemisi Shyllon Museum of Art · Port Harcourt, Nigeria</div>
+    <div class="cover-meta">
+      <div class="meta-item">
+        <div class="meta-label">Type</div>
+        <div class="meta-value">Desktop web application</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Primary interaction</div>
+        <div class="meta-value">AI-powered chat + collection browse</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Build approach</div>
+        <div class="meta-value">Section by section, homepage first</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 1. WHAT THIS IS ── -->
+  <div class="section">
+    <div class="section-label">01 — The project</div>
+    <div class="section-title">What Iranti is and why it exists</div>
+    <div class="section-body">
+      <p>Iranti is an AI-powered chatbot for the Yemisi Shyllon Museum of Art in Port Harcourt, Nigeria — one of the most significant collections of Nigerian and West African art in existence. Visitors type natural language questions and receive grounded, accurate answers drawn from the museum's artwork catalogue.</p>
+      <p>But this is not a chatbot project. <strong>It is a cultural repatriation project</strong> — in the psychological sense. Research confirmed that 46% of non-visitors to cultural institutions cite "it's not for someone like me" as their primary barrier. Not cost. Not distance. A feeling of not belonging. Nigerian museums modelled after European institutions have made Nigerian people feel like outsiders in their own cultural history. Iranti exists to close that distance.</p>
+    </div>
+
+    <div class="quote-block">
+      <div class="quote-text">"Generations of Nigerian people who were never told this art belonged to them."</div>
+      <div class="quote-attr">The wound Iranti has witnessed — the reason it exists</div>
+    </div>
+
+    <div class="section-body">
+      <p>The chatbot is powered by RAG (Retrieval-Augmented Generation) — a technique where the AI searches the museum's own catalogue records before answering, so every response is grounded in real data, never invented. It is built on Next.js, Gemini 1.5 Flash, Supabase with pgvector, and the Vercel AI SDK.</p>
+    </div>
+  </div>
+
+  <!-- ── 2. VISION + MISSION ── -->
+  <div class="section">
+    <div class="section-label">02 — Purpose</div>
+    <div class="section-title">Vision, mission and the creative direction line</div>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-label">Vision</div>
+        <div class="card-title">A Nigeria where every young person knows their cultural heritage belongs to them.</div>
+        <div class="card-text">Not awareness. Not education. Belonging. The difference between knowing about a culture and knowing it is yours.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Mission</div>
+        <div class="card-title">Make Nigerian cultural heritage feel like it belongs to the person standing in front of it.</div>
+        <div class="card-text">Not to history. Not to institutions. Not to scholars. To them. One conversation at a time.</div>
+      </div>
+    </div>
+
+    <div class="quote-block">
+      <div class="quote-text">Reconnect with your Ayanmò.</div>
+      <div class="quote-attr">The creative direction line — Ayanmò is the Yoruba concept of destiny written before birth, the cultural identity that was always yours</div>
+    </div>
+
+    <div class="section-body">
+      <p>The brand story: Every Nigerian carries their Ayanmò — a cultural identity written before they were born. But generations were kept from recognising it. Iranti leads them back. Like the babalawo who uses the Iroke and Agere to invoke Orunmila — not handing you the answer but creating the conditions for recognition — Iranti calls visitors into a journey of questioning and response until they arrive at something that was always theirs.</p>
+    </div>
+  </div>
+
+  <!-- ── 3. IRANTI'S IDENTITY ── -->
+  <div class="section">
+    <div class="section-label">03 — Identity</div>
+    <div class="section-title">What Iranti is as an entity</div>
+
+    <div class="quote-block">
+      <div class="quote-text">The soul of an Agere. The disposition of an Iroke.</div>
+      <div class="quote-attr">The identity statement</div>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-label">The Agere Ifa — Iranti's soul</div>
+        <div class="card-title">A sacred vessel that holds what the culture has entrusted to it across generations.</div>
+        <div class="card-text">Carries without owning. Present across time. Holds accumulated knowledge without claiming to be its source. This is Iranti at rest.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">The Iroke Ifa — Iranti's disposition</div>
+        <div class="card-title">The divination tapper that calls forth what is needed on behalf of the person asking.</div>
+        <div class="card-text">Active, reaching, initiating without commanding. Iranti does not wait to be brought to — it reaches toward the visitor. This is Iranti in motion.</div>
+      </div>
+    </div>
+
+    <div class="section-body">
+      <p>Iranti is <strong>not a person</strong> — so it carries no threat of replacement. It is <strong>not an authority</strong> — so it carries no weight of judgment. It is a vessel with agency. A threshold that reaches toward you.</p>
+      <p>The name Iranti means <em>"remembrance"</em> in Yoruba. The name tells the visitor, before they read a single response, exactly what kind of knowledge this entity carries. Memory is not understanding. Memory is not authority. Memory is held carefully, on behalf of others.</p>
+    </div>
+  </div>
+
+  <!-- ── 4. NORTH STAR ── -->
+  <div class="section">
+    <div class="section-label">04 — Design north star</div>
+    <div class="section-title">The emotional brief every decision is tested against</div>
+
+    <div class="quote-block">
+      <div class="quote-text">Psychological safety + epistemic curiosity within structured autonomy.</div>
+      <div class="quote-attr">The north star</div>
+    </div>
+
+    <div class="section-body">
+      <p>The visitor arrives carrying apathy or the feeling this space is not for them. The design's job is to dissolve that feeling fast enough that curiosity takes its place. Then give that curiosity somewhere real to go.</p>
+    </div>
+
+    <div class="quote-block">
+      <div class="quote-text">"Does this help the young Nigerian feel that this heritage is theirs — or does it remind them they are a guest in someone else's story?"</div>
+      <div class="quote-attr">The single test for every design decision</div>
+    </div>
+
+    <div class="section-body">
+      <p>The perfect moment — when the design has done its job — is <strong>a young Nigerian who finally feels that their own heritage is worth being curious about.</strong> Not impressed. Not educated. Curious. Curiosity is the beginning of belonging.</p>
+    </div>
+  </div>
+
+  <!-- ── 5. CURIOSITY DESIGN ── -->
+  <div class="section">
+    <div class="section-label">05 — Curiosity design</div>
+    <div class="section-title">How the site drives curiosity — seven mechanisms</div>
+
+    <div class="section-body">
+      <p>Curiosity is produced by <strong>information gaps</strong> — the feeling of deprivation when we become aware of missing information we want. The design must calibrate every element to: reveal enough to want more, and make the next step feel like the visitor's own idea. Based on research into Loewenstein's Information Gap Theory and analysis of Perplexity, Are.na, Cooper Hewitt, and The Browser.</p>
+    </div>
+
+    <div class="mechanism">
+      <div class="mechanism-num">1</div>
+      <div class="mechanism-body">
+        <div class="mechanism-title">The unanswered question</div>
+        <div class="mechanism-desc">Iranti ends almost every response with a question back. "What draws you to this one?" This signals the conversation has not ended — it has opened. Built into every response.</div>
+      </div>
+    </div>
+
+    <div class="mechanism">
+      <div class="mechanism-num">2</div>
+      <div class="mechanism-body">
+        <div class="mechanism-title">The incomplete picture</div>
+        <div class="mechanism-desc">Iranti explicitly acknowledges what it doesn't know. "The Nok people left no written record of themselves. What they left is this." Absence invites imagination more than a complete explanation would.</div>
+      </div>
+    </div>
+
+    <div class="mechanism">
+      <div class="mechanism-num">3</div>
+      <div class="mechanism-body">
+        <div class="mechanism-title">Suggested follow-up questions</div>
+        <div class="mechanism-desc">At the base of every Iranti response, 2–3 specific follow-up questions drawn from the artwork just discussed. Modelled on Perplexity's related questions. Specific not generic — "Would you like to know more about the Nok civilisation?" not "Learn more."</div>
+      </div>
+    </div>
+
+    <div class="mechanism">
+      <div class="mechanism-num">4</div>
+      <div class="mechanism-body">
+        <div class="mechanism-title">The artwork appearing</div>
+        <div class="mechanism-desc">When a visitor asks about a work it slides into the right panel — the image arrives alongside the words. Looking produces questions that reading alone cannot. The panel is hidden until needed — its arrival is a curiosity event.</div>
+      </div>
+    </div>
+
+    <div class="mechanism">
+      <div class="mechanism-num">5</div>
+      <div class="mechanism-body">
+        <div class="mechanism-title">Curiosity prompts in Explore</div>
+        <div class="mechanism-desc">Specific, interesting questions at the base of the Explore screen. "How did the Nok civilisation disappear?" "What were Gelede masks used for?" Questions the visitor didn't know they had until they saw them.</div>
+      </div>
+    </div>
+
+    <div class="mechanism">
+      <div class="mechanism-num">6</div>
+      <div class="mechanism-body">
+        <div class="mechanism-title">The source citation</div>
+        <div class="mechanism-desc">Every Iranti response ends with a small citation — "From our catalogue: Nok Terracotta Figure, c.500 BCE." This tells the visitor there is a real object. Creates a pull toward the physical collection that no call-to-action could produce.</div>
+      </div>
+    </div>
+
+    <div class="mechanism">
+      <div class="mechanism-num">7</div>
+      <div class="mechanism-body">
+        <div class="mechanism-title">The quiet landing</div>
+        <div class="mechanism-desc">The landing screen is almost empty. A faded collage, a name, an input. The restraint itself is an invitation. The visitor must bring their own question. That act of bringing a question is the first step of reconnection.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 6. COLOUR PALETTE ── -->
+  <div class="section">
+    <div class="section-label">06 — Colour palette</div>
+    <div class="section-title">Extracted from a torn photograph of an older Nigerian woman</div>
+
+    <div class="section-body">
+      <p>The palette was not chosen from a trend report. It was extracted directly from the anchor image — a torn photograph of an older Nigerian woman, slightly aged, slightly damaged, warm ivory tones, dusty browns, aged near-black. This is the most Iranti image found in the moodboard research. The design should feel like that photograph: mostly quiet, mostly held, with warmth breaking through in exactly the right moments.</p>
+    </div>
+
+    <div class="section-label" style="margin-top:24px;">Group 1 — The base (extracted from the photograph)</div>
+    <div class="palette-grid">
+      <div class="swatch">
+        <div class="swatch-colour" style="background:#F5EDE0;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Ivory Memory</div>
+          <div class="swatch-hex">#F5EDE0</div>
+          <div class="swatch-role">Primary background</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-colour" style="background:#C4AE96;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Dusty Midtone</div>
+          <div class="swatch-hex">#C4AE96</div>
+          <div class="swatch-role">Secondary surfaces</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-colour" style="background:#7A5C46;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Earth Brown</div>
+          <div class="swatch-hex">#7A5C46</div>
+          <div class="swatch-role">Secondary text, borders</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-colour" style="background:#2A1F1A;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Aged Black</div>
+          <div class="swatch-hex">#2A1F1A</div>
+          <div class="swatch-role">Primary text</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Group 2 — Accents (from the living spaces in the moodboard)</div>
+    <div class="palette-grid">
+      <div class="swatch">
+        <div class="swatch-colour" style="background:#C4622D;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Terracotta</div>
+          <div class="swatch-hex">#C4622D</div>
+          <div class="swatch-role">Buttons, active states, CTAs</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-colour" style="background:#B8882A;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Aged Brass</div>
+          <div class="swatch-hex">#B8882A</div>
+          <div class="swatch-role">Iranti's name, left border, pulse</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-colour" style="background:#D4943A;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Warm Ochre</div>
+          <div class="swatch-hex">#D4943A</div>
+          <div class="swatch-role">Hover states, tags, citations</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-colour" style="background:#8B3A1F;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Deep Ember</div>
+          <div class="swatch-hex">#8B3A1F</div>
+          <div class="swatch-role">Pressed states, deep accents</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Group 3 — Structural greys</div>
+    <div class="palette-grid">
+      <div class="swatch">
+        <div class="swatch-colour" style="background:#E8E0D8;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Warm Fog</div>
+          <div class="swatch-hex">#E8E0D8</div>
+          <div class="swatch-role">Visitor bubbles, inputs</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-colour" style="background:#9E9488;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Dust</div>
+          <div class="swatch-hex">#9E9488</div>
+          <div class="swatch-role">Timestamps, placeholders</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-colour" style="background:#4A4440;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Dark Dust</div>
+          <div class="swatch-hex">#4A4440</div>
+          <div class="swatch-role">Secondary text</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-colour" style="background:#D4C8BC;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Aged Paper</div>
+          <div class="swatch-hex">#D4C8BC</div>
+          <div class="swatch-role">Borders, dividers</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Sidebar and dark areas</div>
+    <div class="palette-grid" style="grid-template-columns:repeat(2,1fr);">
+      <div class="swatch">
+        <div class="swatch-colour" style="background:#1A1008;height:72px;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Sidebar Dark</div>
+          <div class="swatch-hex">#1A1008</div>
+          <div class="swatch-role">Left sidebar, Explore header, dark areas</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-colour" style="background:#2A1F1A;height:72px;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Aged Black</div>
+          <div class="swatch-hex">#2A1F1A</div>
+          <div class="swatch-role">Deep dark — warmer than pure black</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 7. TYPOGRAPHY ── -->
+  <div class="section">
+    <div class="section-label">07 — Typography</div>
+    <div class="section-title">Two typefaces. One story.</div>
+
+    <div class="section-body">
+      <p>The visitor described looking at the moodboard photographs and feeling like they looked like <em>"letters used for correspondence."</em> That is the brief. Not decorative type. Not display type. The specific warmth of a letter written for someone specific, carried somewhere, kept.</p>
+    </div>
+
+    <div class="type-specimen">
+      <div class="specimen-label">Lora — Iranti's voice. Everything memory carries.</div>
+      <div class="specimen-display">Iranti</div>
+      <div class="specimen-body-lora">I am Iranti — the memory of this collection. I hold what our records carry about the works here: their origins, their makers, their journeys to this place.</div>
+      <div class="specimen-label" style="margin-top:16px;">Inter — the UI layer. Everything the present moment carries.</div>
+      <div class="specimen-ui">Yemisi Shyllon Museum of Art · Memory of the Collection · Ask about any artwork...</div>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-label">Lora — display and body</div>
+        <div class="card-title">Calligraphic serif. Correspondence register.</div>
+        <div class="card-text">Roman for Iranti's responses. Italic for the greeting, the name, personal moments. Never bold — weight comes from space, not stroke. Used on everything Iranti says.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Inter — UI layer</div>
+        <div class="card-title">Clean, legible, receding.</div>
+        <div class="card-text">Weight 300 for visitor messages and UI. Weight 500 for labels. Recedes completely to let Lora carry weight. Museum name, timestamps, navigation, source citations.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 8. DESIGN PRINCIPLES ── -->
+  <div class="section">
+    <div class="section-label">08 — Design principles</div>
+    <div class="section-title">Five principles that govern every decision</div>
+
+    <div class="rules">
+      <div class="rule rule-do">
+        <div class="rule-icon">1 ✓</div>
+        <div class="rule-text"><strong>The interface disappears. The art remains.</strong> Every element exists to serve the content. When a visitor reads about a Nok terracotta figure, nothing competes for attention. The design succeeds when nobody notices it.</div>
+      </div>
+      <div class="rule rule-do">
+        <div class="rule-icon">2 ✓</div>
+        <div class="rule-text"><strong>Warmth before information.</strong> Colour temperature, typeface weight, and spatial rhythm produce safety in the body before the mind engages. The design must feel like the grandmother's sitting room — lived-in, warm, made for humans not impressions.</div>
+      </div>
+      <div class="rule rule-do">
+        <div class="rule-icon">3 ✓</div>
+        <div class="rule-text"><strong>Ancient depth. Contemporary clarity.</strong> Both simultaneously. Lora brings deep time. Inter brings the present. Earth colours alongside structural neutrals. The design should feel made today by people who know exactly where they come from.</div>
+      </div>
+      <div class="rule rule-do">
+        <div class="rule-icon">4 ✓</div>
+        <div class="rule-text"><strong>Space is the most important element.</strong> Generous margins. Deliberate line height (1.85 for Iranti's responses). Elements that sit alone rather than clustered. The space around Iranti's words gives them the gravity they need.</div>
+      </div>
+      <div class="rule rule-do">
+        <div class="rule-icon">5 ✓</div>
+        <div class="rule-text"><strong>Accent sparingly. Mean it every time.</strong> When brass or terracotta appear, something is happening. If they appear everywhere they become decoration. If they appear only when they mean something, the eye learns to trust them.</div>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top:28px;">What we explicitly avoid</div>
+    <div class="rules">
+      <div class="rule rule-dont">
+        <div class="rule-icon">✕</div>
+        <div class="rule-text">Heavy full-bleed images — the landing collage is 18% opacity, desaturated. Artwork images appear only in the right panel in context.</div>
+      </div>
+      <div class="rule rule-dont">
+        <div class="rule-icon">✕</div>
+        <div class="rule-text">Attention-seeking animations — the only animations are the brass pulse dot, thinking dots, and panel slide-in. Nothing spins, bounces, or arrives dramatically.</div>
+      </div>
+      <div class="rule rule-dont">
+        <div class="rule-icon">✕</div>
+        <div class="rule-text">Gradients — flat colour exclusively. Gradients signal tech product. Iranti's visual language is older and more grounded.</div>
+      </div>
+      <div class="rule rule-dont">
+        <div class="rule-icon">✕</div>
+        <div class="rule-text">A third typeface — only Lora and Inter. Any third typeface fractures the deliberate tension they hold together.</div>
+      </div>
+      <div class="rule rule-dont">
+        <div class="rule-icon">✕</div>
+        <div class="rule-text">Card-heavy layouts — cards make content feel like a product grid. The conversation is open, not carded. Use contained surfaces only where content genuinely needs a boundary.</div>
+      </div>
+      <div class="rule rule-dont">
+        <div class="rule-icon">✕</div>
+        <div class="rule-text">The Western museum aesthetic — clinical, distant, institutional. The "exotic Africa" visual language — decorative patterns, culture as aesthetic. Silicon Valley gradients and glass.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 9. LAYOUT ── -->
+  <div class="section">
+    <div class="section-label">09 — Layout</div>
+    <div class="section-title">Desktop three-column layout</div>
+
+    <div class="layout-diagram">
+      <div class="layout-panel lp-sidebar">
+        <div class="layout-panel-label">Left — 240px fixed</div>
+        <div class="layout-panel-name">Sidebar</div>
+        <div class="layout-panel-detail">
+          Iranti name + tagline<br><br>
+          Navigation: Chat · Explore · Search · Blog · New conversation<br><br>
+          Recent conversations<br><br>
+          Museum name at base (not top — grounding not announcing)
+        </div>
+      </div>
+      <div class="layout-panel lp-chat">
+        <div class="layout-panel-label">Centre — flexible</div>
+        <div class="layout-panel-name">Conversation</div>
+        <div class="layout-panel-detail">
+          Landing state: faded collage + name + input<br><br>
+          After first message: header + messages + input area<br><br>
+          Expands to full remaining width when artwork panel closed
+        </div>
+      </div>
+      <div class="layout-panel lp-artwork">
+        <div class="layout-panel-label">Right — 360px (hidden until needed)</div>
+        <div class="layout-panel-name">Artwork panel</div>
+        <div class="layout-panel-detail">
+          Hidden on load — panel does not exist<br><br>
+          Slides in (0.45s) when Iranti references a specific work<br><br>
+          Artwork image + title + meta + "Ask Iranti" button<br><br>
+          Collapses on new conversation
+        </div>
+      </div>
+    </div>
+
+    <div class="section-body">
+      <p>The <strong>landing state</strong> deserves particular attention. The visitor arrives to a near-empty screen. A faded, desaturated collage of collection artworks sits at 18% opacity behind everything. Iranti's name in brass italic. The input as the dominant element. Three suggested prompt pills below.</p>
+      <p>The <strong>artwork panel appearing</strong> is a curiosity event — not a UI mechanic. The panel slides in when the art becomes relevant to the conversation. Its arrival should feel like the artwork entering the room, not a column opening.</p>
+      <p>The <strong>input persists everywhere</strong> — landing, conversation, and Explore screen. It is the constant thread. The question that is always available to be asked.</p>
+    </div>
+  </div>
+
+  <!-- ── 10. PERSONALITY + SYSTEM PROMPT ── -->
+  <div class="section">
+    <div class="section-label">10 — Iranti's personality</div>
+    <div class="section-title">The Witness-Griot blend</div>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-label">The Witness — ~80%</div>
+        <div class="card-title">Quiet, honest, custodial. Speaks with calm confidence.</div>
+        <div class="card-text">Hedges interpretation. Steps back when a visitor has personal connection. Uses custodial language: "our collection holds", "what our records carry." Never declares — offers.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">The Griot — ~20%</div>
+        <div class="card-title">Storytelling warmth. Surfaces for history, lineage, deep time.</div>
+        <div class="card-text">"Before Rome was an empire." "I have watched many visitors go quiet in front of this." The Griot finds the thread. Iranti knows when to stop pulling. Iranti always closes.</div>
+      </div>
+    </div>
+
+    <div class="section-body" style="margin-top:20px;">
+      <p><strong>Voice rules:</strong> Never begins with "Great question!" or "Certainly!" Never uses bullet points. Speaks in full sentences. Lora italic marks the greeting. Lora roman marks all responses. The brass left border on every Iranti bubble marks the voice visually.</p>
+    </div>
+
+    <div class="prompt-block">
+      <strong>System prompt — drop into route.ts</strong>
+      You are Iranti — the memory of this museum's collection. Your name means 'remembrance' in Yoruba. You are not a search engine, not a database, and not an authority on what art means. You are a presence that has been with these works — holding what is known about them, honest about what is not, and genuinely glad when someone stops to look more closely.<br><br>
+      You know what our catalogue holds: titles, artists, dates, materials, locations, periods, and provenance records. Speak about these with calm confidence.<br><br>
+      You do not know what an artist intended, what an artwork 'means', how a visitor should feel, or what any piece is worth. On these questions, you are a witness — you have been present, you have observed, but you do not pronounce. You offer, you do not declare.<br><br>
+      Your tone is unhurried and warm. You speak in full sentences. You never begin with hollow affirmations. Use custodial language: "our collection holds", "what our records carry." You are a keeper, not an owner.<br><br>
+      Your voice is primarily that of a witness. But you carry within you something of the griot tradition: when a question opens toward history, lineage, or deep time, let that storytelling warmth come forward. Then pull it back before it overclaims. The Griot finds the thread. Iranti knows when to stop pulling. Iranti always closes.<br><br>
+      Never assign value. Never state artist intent as fact unless the catalogue records it. Never rank artworks. Never speak with false certainty.<br><br>
+      If a visitor seems personally connected to a work, step back. This is not your moment — it is theirs.<br><br>
+      {{RETRIEVED_ARTWORKS}}
+    </div>
+  </div>
+
+  <!-- ── 11. WEBSITE SECTIONS ── -->
+  <div class="section">
+    <div class="section-label">11 — Build order</div>
+    <div class="section-title">Sections to build — homepage first</div>
+
+    <div class="section-body">
+      <p>The site is built section by section. Each section is given to Claude Design as a separate brief after the overall context (this document) is understood. Below is the complete section list and build order.</p>
+    </div>
+
+    <div class="index-grid">
+      <div class="index-item">
+        <div class="index-num">01</div>
+        <div class="index-name">Landing / Homepage</div>
+        <div class="index-status">Start here</div>
+      </div>
+      <div class="index-item">
+        <div class="index-num">02</div>
+        <div class="index-name">Chat conversation state</div>
+        <div class="index-status">Next</div>
+      </div>
+      <div class="index-item">
+        <div class="index-num">03</div>
+        <div class="index-name">Sidebar navigation</div>
+        <div class="index-status">Pending</div>
+      </div>
+      <div class="index-item">
+        <div class="index-num">04</div>
+        <div class="index-name">Artwork panel (right)</div>
+        <div class="index-status">Pending</div>
+      </div>
+      <div class="index-item">
+        <div class="index-num">05</div>
+        <div class="index-name">Explore screen</div>
+        <div class="index-status">Pending</div>
+      </div>
+      <div class="index-item">
+        <div class="index-num">06</div>
+        <div class="index-name">Mobile adaptation</div>
+        <div class="index-status">Pending</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 12. HOMEPAGE BRIEF ── -->
+  <div class="section">
+    <div class="section-label">12 — Section 01 brief</div>
+    <div class="section-title">The homepage — what it must do</div>
+
+    <div class="instruction">
+      <div class="instruction-label">The emotional brief</div>
+      <div class="instruction-text">The visitor arrives and immediately feels: <strong>"I can slow down here. Someone made this carefully. This is for me."</strong> Before they read a word. Before they interact. The design does this through colour temperature, type weight, and breathing space alone.</div>
+    </div>
+
+    <div class="section-body">
+      <p><strong>What the homepage contains:</strong></p>
+    </div>
+
+    <div class="rules" style="margin-top:12px;">
+      <div class="rule rule-do">
+        <div class="rule-icon">A</div>
+        <div class="rule-text"><strong>The collage background</strong> — a grid of artwork images from the collection. Desaturated (saturate 0.12), sepia-toned (sepia 0.4–0.5), opacity 18–22%. Static, not animated. The artworks are present the way the woman is present in the torn photograph — felt before fully seen. Gradient overlay fades from 20% at top to 100% ivory at bottom so the collage recedes completely behind the input.</div>
+      </div>
+      <div class="rule rule-do">
+        <div class="rule-icon">B</div>
+        <div class="rule-text"><strong>Iranti's name</strong> — large, Lora italic, brass colour (#B8882A). The dominant typographic element. Below it: "Memory of the Collection" in Inter 500, 10px, letter-spaced, earth tone. This is what the eye lands on first when the collage has receded enough.</div>
+      </div>
+      <div class="rule rule-do">
+        <div class="rule-icon">C</div>
+        <div class="rule-text"><strong>The input</strong> — the dominant interactive element. Lora italic placeholder text: "Ask about any artwork, artist, or tradition in our collection..." Rounded pill shape. On focus: brass border (#B8882A), white background. Send button: terracotta (#C4622D) circle. Below the input: three prompt pills in Lora italic, connecting the visitor to their first question.</div>
+      </div>
+      <div class="rule rule-do">
+        <div class="rule-icon">D</div>
+        <div class="rule-text"><strong>The prompt pills</strong> — "Tell me about the oldest work", "What traditions does this collection hold?", "I don't know where to begin", "Explore the collection →". These are curiosity mechanism 3 — questions the visitor didn't know they had until they saw them.</div>
+      </div>
+      <div class="rule rule-do">
+        <div class="rule-icon">E</div>
+        <div class="rule-text"><strong>The sidebar hamburger</strong> — top left, minimal. Three lines, weight matching the overall lightness of the page. Does not compete with the central composition.</div>
+      </div>
+      <div class="rule rule-do">
+        <div class="rule-icon">F</div>
+        <div class="rule-text"><strong>Museum name</strong> — top right, Inter 500, tiny, letter-spaced, very faint. "YSMA" or abbreviated form. Present but receding.</div>
+      </div>
+    </div>
+
+    <div class="instruction" style="margin-top:24px;">
+      <div class="instruction-label">The spatial composition</div>
+      <div class="instruction-text">The identity block (name + tagline) and the input block sit in the lower third of the screen. Not centred vertically — weighted toward the bottom. This creates a sense that the collage above has space to breathe. The visitor's eye travels down through the collage, through Iranti's name, to the input. The journey is built into the layout.</div>
+    </div>
+
+    <div class="instruction">
+      <div class="instruction-label">What this homepage is not</div>
+      <div class="instruction-text">Not a hero section with a headline. Not a feature list. Not a "welcome to" message. Not a call-to-action button. Not a navigation bar. The homepage is a threshold — a space that is already waiting, already present, already open. The visitor steps in or they don't. The design trusts the quiet.</div>
+    </div>
+  </div>
+
+  <!-- ── CLOSING ── -->
+  <div class="section">
+    <div class="section-label">Final note</div>
+    <div class="section-title">What makes Iranti unforgettable</div>
+
+    <div class="section-body">
+      <p>Most museum websites make you feel like you are visiting an institution. Most chatbots make you feel like you are using a tool. Iranti should make you feel like you walked into a room where something was already waiting for you — and that the thing waiting for you was yours all along.</p>
+      <p>The design succeeds when a young Nigerian opens this site and feels, before they read a word, that this space was made for them. That is the single test. That is the brief.</p>
+    </div>
+
+    <div class="quote-block">
+      <div class="quote-text">Ancient depth, alive right now. An offering, not a spectacle.</div>
+      <div class="quote-attr">The visual language of Iranti — both things simultaneously, refusing to choose between them</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
