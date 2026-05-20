@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { ChatInput } from '@/components/ChatInput'
 import { ChatThread } from '@/components/ChatThread'
@@ -10,7 +10,7 @@ import { PromptPills } from '@/components/PromptPills'
 import { TopBar } from '@/components/TopBar'
 import type { Message } from '@/types'
 
-export default function Home() {
+function HomeInner() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const chatParam = searchParams.get('chat')
@@ -177,5 +177,13 @@ export default function Home() {
         </div>
       </main>
     </div>
+  )
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={null}>
+      <HomeInner />
+    </Suspense>
   )
 }
