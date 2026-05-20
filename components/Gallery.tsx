@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import type { Artwork } from '@/types'
 
@@ -68,8 +69,9 @@ export function Gallery() {
       {items.map((art, i) => {
         const slot = SLOTS[i % SLOTS.length]
         return (
-          <figure
+          <Link
             key={art.id}
+            href={`/ask-iranti/${art.id}`}
             className="gallery-item"
             style={{ width: slot.containerWidth, gap: slot.textGap }}
           >
@@ -87,11 +89,11 @@ export function Gallery() {
                 />
               )}
             </div>
-            <figcaption className="gallery-caption">
+            <div className="gallery-caption">
               <div className="gallery-title">{art.title}</div>
               <div className="gallery-sub">{formatSubtitle(art)}</div>
-            </figcaption>
-          </figure>
+            </div>
+          </Link>
         )
       })}
     </div>

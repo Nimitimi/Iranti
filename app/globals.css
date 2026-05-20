@@ -39,6 +39,10 @@
   --tab-active-fg: #14100b;
   --tab-active-count: rgba(20, 16, 11, 0.55);
   --send-fg: #14100b;
+
+  /* Motion curves — built-in easings lack punch; these give intent. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 *,
@@ -537,7 +541,7 @@ a {
   background: #f5c233;
 }
 .send-btn:active {
-  transform: translateY(1px);
+  transform: scale(0.97);
 }
 .send-btn:disabled {
   opacity: 0.5;
@@ -761,11 +765,26 @@ a {
   flex-direction: column;
   align-items: center;
   margin: 0;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
 }
 .gallery-image {
   display: block;
   overflow: hidden;
   background: var(--bg-tile-ph);
+}
+.gallery-image img {
+  transition: transform 0.3s var(--ease-out), filter 0.3s var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .gallery-item:hover .gallery-image img {
+    transform: scale(1.04);
+    filter: brightness(1.05);
+  }
+  .gallery-item:hover .gallery-title {
+    color: #ffffff;
+  }
 }
 .gallery-image-skeleton {
   opacity: 0.55;
@@ -941,14 +960,16 @@ a {
   border: 1px solid var(--border);
   border-radius: 10px;
   overflow: hidden;
-  transition: border-color 0.2s, transform 0.25s, box-shadow 0.25s, background-color 0.35s;
+  transition: border-color 0.2s, transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out), background-color 0.35s;
   display: flex;
   flex-direction: column;
 }
-.tile:hover {
-  border-color: #413E3B;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-hover);
+@media (hover: hover) and (pointer: fine) {
+  .tile:hover {
+    border-color: #413E3B;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+  }
 }
 .tile-img {
   aspect-ratio: 4 / 5;
@@ -1356,7 +1377,7 @@ a {
   background: #1f1a16;
   overflow: hidden;
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
 }
 .board-card img {
   display: block;
@@ -1407,17 +1428,19 @@ a {
   color: #FFFFFF;
   line-height: 1.35;
 }
-.board-card:hover {
-  transform: scale(1.04);
-  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.55);
-  z-index: 10;
-}
-.board-card:hover img {
-  filter: saturate(1.05) contrast(1.04);
-}
-.board-card:hover .board-scrim,
-.board-card:hover .board-meta {
-  opacity: 1;
+@media (hover: hover) and (pointer: fine) {
+  .board-card:hover {
+    transform: scale(1.04);
+    box-shadow: 0 18px 38px rgba(0, 0, 0, 0.55);
+    z-index: 10;
+  }
+  .board-card:hover img {
+    filter: saturate(1.05) contrast(1.04);
+  }
+  .board-card:hover .board-scrim,
+  .board-card:hover .board-meta {
+    opacity: 1;
+  }
 }
 
 /* ─── Explore: infinite canvas (Grid mode) ─── */
@@ -1808,7 +1831,7 @@ a {
   inset: 0;
   background: rgba(0, 0, 0, 0.3);
   z-index: 190;
-  animation: artwork-panel-fade-in 280ms ease;
+  animation: artwork-panel-fade-in 280ms var(--ease-out);
 }
 @keyframes artwork-panel-fade-in {
   from { opacity: 0; }
@@ -1824,7 +1847,7 @@ a {
   background: #211b17;
   border-left: 1px solid rgba(77, 66, 56, 0.4);
   z-index: 200;
-  animation: artwork-panel-slide-in 280ms ease;
+  animation: artwork-panel-slide-in 280ms var(--ease-drawer);
   box-shadow: -20px 0 60px -20px rgba(0, 0, 0, 0.6);
 }
 @keyframes artwork-panel-slide-in {
@@ -2490,6 +2513,9 @@ a {
 .ask-send:not(:disabled):hover {
   background: #f5c233;
 }
+.ask-send:not(:disabled):active {
+  transform: scale(0.97);
+}
 .ask-send:disabled {
   opacity: 0.4;
   cursor: not-allowed;
@@ -2689,7 +2715,7 @@ a {
   background: #1f1a16;
   overflow: hidden;
   border-radius: 0;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out), opacity 0.3s ease;
 }
 .ig-tile img {
   display: block;
@@ -2740,19 +2766,21 @@ a {
   color: #D1C7BD;
   line-height: 1.35;
 }
-.ig-stage:not(.dragging) .ig-tile:hover {
-  transform: scale(1.04) translate3d(var(--tx, 0), var(--ty, 0), 0);
-  z-index: 5;
-  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.55);
-}
-.ig-stage:not(.dragging) .ig-tile:hover .ig-scrim {
-  opacity: 1;
-}
-.ig-stage:not(.dragging) .ig-tile:hover .ig-meta {
-  opacity: 1;
-}
-.ig-stage:not(.dragging) .ig-tile:hover img {
-  filter: saturate(1.05) contrast(1.04);
+@media (hover: hover) and (pointer: fine) {
+  .ig-stage:not(.dragging) .ig-tile:hover {
+    transform: scale(1.04) translate3d(var(--tx, 0), var(--ty, 0), 0);
+    z-index: 5;
+    box-shadow: 0 18px 38px rgba(0, 0, 0, 0.55);
+  }
+  .ig-stage:not(.dragging) .ig-tile:hover .ig-scrim {
+    opacity: 1;
+  }
+  .ig-stage:not(.dragging) .ig-tile:hover .ig-meta {
+    opacity: 1;
+  }
+  .ig-stage:not(.dragging) .ig-tile:hover img {
+    filter: saturate(1.05) contrast(1.04);
+  }
 }
 
 .ig-edge-fade {
@@ -2870,4 +2898,33 @@ a {
   object-fit: cover;
   pointer-events: none;
   display: block;
+}
+
+/* ─── Reduced motion: keep fades, drop looping + positional movement ─── */
+@media (prefers-reduced-motion: reduce) {
+  /* Stop continuous/looping animations (typing dots, skeletons, caret) */
+  .chat-typing span,
+  .home-typing span,
+  .ask-typing span,
+  .gallery-image-skeleton,
+  .ig-dot,
+  .ask-desc-caret {
+    animation: none;
+  }
+
+  /* Entrances fade in place — no slide */
+  .page.chat-page .chat-shell,
+  .page.chat-page .chat-msgs,
+  .page.chat-page .chat-dock .input-wrap,
+  .artwork-panel {
+    animation: artwork-panel-fade-in 0.2s ease both;
+  }
+
+  /* No hover lift/scale — comprehension fades stay */
+  .tile:hover,
+  .board-card:hover,
+  .ig-stage:not(.dragging) .ig-tile:hover,
+  .gallery-item:hover .gallery-image img {
+    transform: none;
+  }
 }

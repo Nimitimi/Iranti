@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import type { Artwork } from '@/types'
 
 interface InfiniteGridProps {
@@ -64,6 +64,12 @@ export function InfiniteGrid({
   const artworksRef = useRef<Artwork[]>(artworks)
   const onClickRef = useRef(onArtworkClick)
   const onCloseRef = useRef(onClose)
+  const [hintHidden, setHintHidden] = useState(false)
+
+  useEffect(() => {
+    const t = setTimeout(() => setHintHidden(true), 5000)
+    return () => clearTimeout(t)
+  }, [])
 
   useEffect(() => {
     artworksRef.current = artworks
@@ -319,6 +325,10 @@ export function InfiniteGrid({
     <div className="ig-viewport" ref={viewportRef} aria-label="Infinite grid">
       <div className="ig-container" ref={containerRef}>
         <div className="ig-grid" ref={gridRef} />
+      </div>
+      <div className={`ig-hint${hintHidden ? ' hidden' : ''}`} aria-hidden="true">
+        <span className="ig-dot" />
+        Press ESC to leave
       </div>
     </div>
   )
