@@ -37,6 +37,10 @@ yarn-error.log*
 # local Claude Code config (machine-specific, can contain tokens)
 .claude/
 
+# installed agent skills (local tooling)
+.agents/
+skills-lock.json
+
 # dev server logs
 dev.log
 *.log

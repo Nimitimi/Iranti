@@ -2928,3 +2928,280 @@ a {
     transform: none;
   }
 }
+
+/* ════════════════════════════════════════════════════════════════════
+   Mobile (≤768px) — layout/spacing/grid adaptation only.
+   Desktop card designs, typography, colours, and component structure are
+   untouched; these rules only re-flow direction, ratios, and columns.
+   ════════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* ─── 1. Homepage hero + input + gallery ─── */
+
+  /* Desktop pins .main-content absolutely at (340,180) with a fixed 760px
+     width. On mobile let it flow normally under the top bar, full width,
+     and vertically centered in the viewport so the hero + chatbox read as
+     one centered composition. */
+  .main-content {
+    position: static;
+    left: auto;
+    top: auto;
+    width: 100%;
+    min-height: calc(100vh - 80px);
+    padding: 24px 20px 64px;
+    gap: 40px;
+    justify-content: center;
+    transform: none;
+  }
+  /* Prompt pills are removed on the mobile homepage. */
+  .prompt-pills {
+    display: none;
+  }
+  /* Sidebar push would shove the now-static content off-screen on a narrow
+     viewport — the sidebar overlays instead. */
+  .page:has(.sidebar.is-open) .main-content {
+    transform: none;
+  }
+  .hero h1 {
+    font-size: 64px;
+  }
+  .discovery {
+    width: 100%;
+    gap: 48px;
+  }
+  /* Chat input full width with horizontal breathing room (padding lives on
+     .main-content). */
+  .input-wrap {
+    width: 100%;
+  }
+
+  /* Artwork preview cards: keep the existing flex row, but scroll
+     horizontally instead of centering (cards keep their fixed widths). */
+  .gallery {
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 28px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .gallery::-webkit-scrollbar {
+    display: none;
+  }
+  .gallery-item {
+    flex: 0 0 auto;
+  }
+
+  /* ─── 2. Explore page ─── */
+  .explore-top {
+    padding: 0 20px;
+    gap: 12px;
+    height: 64px;
+  }
+  .explore-controls {
+    padding: 20px 20px 0;
+  }
+  .explore-content {
+    padding: 32px 20px 0;
+  }
+
+  /* Hide the Medium view option — toggle stays visually identical. */
+  .explore-size-btn-m {
+    display: none;
+  }
+
+  /* The shared search pill (used by .explore-top and .ask-top) has a 420px
+     min-width that overflows phones — let it shrink to fit. */
+  .ask-search {
+    min-width: 0;
+    padding: 10px 16px;
+    gap: 10px;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+  }
+
+  /* Search (Explore + Ask Iranti tops): collapse to an icon button, expand
+     to a full-width bar over the top row on tap. */
+  .explore-top,
+  .ask-top {
+    position: relative;
+  }
+  .explore-top .ask-search,
+  .ask-top .ask-search {
+    width: 40px;
+    height: 40px;
+    min-width: 0;
+    padding: 0;
+    gap: 0;
+    justify-content: center;
+    border-radius: 999px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .explore-top .ask-search .ask-search-input,
+  .ask-top .ask-search .ask-search-input {
+    display: none;
+  }
+  .explore-top .ask-search.is-expanded,
+  .ask-top .ask-search.is-expanded {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    width: auto;
+    height: 44px;
+    padding: 10px 16px;
+    gap: 10px;
+    justify-content: flex-start;
+    border-radius: 999px;
+    overflow: visible;
+    background: #191512;
+    z-index: 60;
+  }
+  .explore-top .ask-search.is-expanded .ask-search-input,
+  .ask-top .ask-search.is-expanded .ask-search-input {
+    display: block;
+  }
+
+  /* Reduce the "All works" filter label size on mobile. */
+  .explore-filter {
+    font-size: 13px;
+    letter-spacing: 0.06em;
+  }
+  .explore-filter svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Small view → 2 columns. Cards keep their design; only width re-flows.
+     Inline width/height styles require !important to override. */
+  .explore-list {
+    width: 100%;
+    gap: 28px;
+  }
+  .explore-list-row {
+    flex-wrap: wrap;
+    gap: 24px 16px;
+    align-items: flex-start;
+  }
+  .explore-list-card {
+    flex: 0 0 calc(50% - 8px);
+    width: calc(50% - 8px) !important;
+  }
+  .explore-list-img {
+    width: 100% !important;
+  }
+
+  /* Medium view (still reachable on desktop) → single column if shown. */
+  .explore-mid {
+    width: 100%;
+  }
+  .explore-mid-row {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  /* Large view → 1 column, full width, aspect ratio preserved (no crop). */
+  .explore-gallery-row {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    column-gap: 0;
+    row-gap: 40px;
+    margin-left: 0;
+    width: 100%;
+    align-items: stretch;
+  }
+  .explore-gallery-card {
+    width: 100%;
+    flex: 0 0 auto;
+  }
+  .explore-gallery-img {
+    width: 100%;
+    height: auto;
+  }
+  .explore-gallery-img img {
+    height: auto;
+    object-fit: contain;
+  }
+
+  /* ─── 3. Artwork detail page (/ask-iranti/[id]) ─── */
+  .ask-top {
+    padding: 0 20px;
+    gap: 12px;
+    height: 64px;
+  }
+  /* Two-column fixed-height layout collapses to a single stacked column. */
+  .ask-main {
+    flex-direction: column;
+    height: auto;
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 100%;
+    transform: none;
+    padding: 24px 20px 0;
+    gap: 28px;
+  }
+  /* Rotated "previous" thumbnail floats off-canvas on desktop — drop it. */
+  .ask-prev {
+    display: none;
+  }
+  /* Artwork image: full width, natural aspect ratio. */
+  .ask-image {
+    width: 100%;
+    flex: 0 0 auto;
+    height: auto;
+  }
+  .ask-image img {
+    height: auto;
+  }
+  /* Chat column: full width, flows with the page (no inner fixed-height
+     scroller); input lands at the bottom of the section naturally. */
+  .ask-right {
+    width: 100%;
+    flex: 0 0 auto;
+    height: auto;
+  }
+  .ask-chat-scroll {
+    flex: 0 0 auto;
+    overflow: visible;
+    min-height: 0;
+  }
+  .ask-desc {
+    width: 100%;
+  }
+  /* Similar artwork → horizontal scroll, scrollbar hidden. */
+  .ask-similar {
+    transform: none;
+    width: 100%;
+    max-width: 100%;
+    padding: 0 20px;
+    margin: 48px 0 64px;
+  }
+  .ask-similar-row {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .ask-similar-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Explore's artwork drawer becomes a full-width sheet; tighten padding and
+     let the similar row scroll horizontally. */
+  .artwork-panel {
+    width: 100vw;
+  }
+  .artwork-panel-scroll {
+    padding: 36px 20px 56px;
+  }
+  .similar-row {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .similar-row::-webkit-scrollbar {
+    display: none;
+  }
+}

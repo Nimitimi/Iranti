@@ -87,7 +87,11 @@ export default function AskIranti() {
   const chatScrollRef = useRef<HTMLDivElement>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [searchOpen, setSearchOpen] = useState(false)
+  // Mobile: the search collapses to an icon and expands on tap. No effect on
+  // desktop, where the .ask-search pill is always shown.
+  const [searchExpanded, setSearchExpanded] = useState(false)
   const searchWrapRef = useRef<HTMLDivElement>(null)
+  const searchInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     let cancelled = false
@@ -159,6 +163,29 @@ export default function AskIranti() {
       document.removeEventListener('keydown', onKey)
     }
   }, [searchOpen])
+
+  // Collapse the mobile search back to its icon on outside click or Escape.
+  useEffect(() => {
+    if (!searchExpanded) return
+    const onDown = (e: MouseEvent) => {
+      if (!searchWrapRef.current?.contains(e.target as Node)) {
+        setSearchExpanded(false)
+        setSearchOpen(false)
+      }
+    }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setSearchExpanded(false)
+        setSearchOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', onDown)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('mousedown', onDown)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [searchExpanded])
 
   const similar = useMemo(() => {
     if (!artwork || artworks.length === 0) return [] as Artwork[]
@@ -268,9 +295,21 @@ export default function AskIranti() {
         <Link className="ask-back" href="/explore">
           Explore
         </Link>
-        <div className="ask-search" ref={searchWrapRef}>
+        <div
+          className={`ask-search${searchExpanded ? ' is-expanded' : ''}`}
+          ref={searchWrapRef}
+          onClick={() => {
+            // On mobile the collapsed icon expands and focuses the input;
+            // on desktop the input is already visible so this is a no-op tap.
+            if (!searchExpanded) {
+              setSearchExpanded(true)
+              requestAnimationFrame(() => searchInputRef.current?.focus())
+            }
+          }}
+        >
           <SearchIcon />
           <input
+            ref={searchInputRef}
             type="text"
             className="ask-search-input"
             placeholder="Search by title or artist"
