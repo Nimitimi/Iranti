@@ -16,6 +16,10 @@ export function ChatInput({
   placeholder,
 }: ChatInputProps) {
   const [value, setValue] = useState('')
+  // Track the mobile breakpoint so we can show a shorter placeholder there.
+  // Starts false to match SSR; the effect corrects it on mount (no hydration
+  // mismatch since the first client render also reads false).
+  const [isMobile, setIsMobile] = useState(false)
   const taRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
@@ -23,6 +27,14 @@ export function ChatInput({
     taRef.current.style.height = 'auto'
     taRef.current.style.height = Math.min(taRef.current.scrollHeight, 80) + 'px'
   }, [value])
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 768px)')
+    const update = () => setIsMobile(mq.matches)
+    update()
+    mq.addEventListener('change', update)
+    return () => mq.removeEventListener('change', update)
+  }, [])
 
   useEffect(() => {
     if (pendingPrompt) setValue(pendingPrompt)
@@ -42,7 +54,9 @@ export function ChatInput({
         className="input-field"
         placeholder={
           placeholder ??
-          'Ask about any artwork, artist, or tradition in our collection…'
+          (isMobile
+            ? 'Ask about any artwork'
+            : 'Ask about any artwork, artist, or tradition in our collection…')
         }
         value={value}
         onChange={(e) => setValue(e.target.value)}

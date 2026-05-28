@@ -2946,20 +2946,29 @@ a {
     left: auto;
     top: auto;
     width: 100%;
-    min-height: calc(100vh - 80px);
-    padding: 24px 20px 64px;
+    /* Fill the whole viewport (pulling up under the 80px top bar) so the
+       hero + chatbox center against the true page center, not the area
+       below the bar. */
+    min-height: 100vh;
+    margin-top: -80px;
+    padding: 20px;
     gap: 40px;
     justify-content: center;
-    transform: none;
+    /* Nudge the whole centered composition (hero + content block) down. */
+    transform: translateY(72px);
+  }
+  /* +32px breathing room between the chatbox and the preview cards. */
+  .content-block {
+    gap: 64px;
   }
   /* Prompt pills are removed on the mobile homepage. */
   .prompt-pills {
     display: none;
   }
   /* Sidebar push would shove the now-static content off-screen on a narrow
-     viewport — the sidebar overlays instead. */
+     viewport — the sidebar overlays instead (keep the 24px downward nudge). */
   .page:has(.sidebar.is-open) .main-content {
-    transform: none;
+    transform: translateY(72px);
   }
   .hero h1 {
     font-size: 64px;
@@ -2974,21 +2983,22 @@ a {
     width: 100%;
   }
 
-  /* Artwork preview cards: keep the existing flex row, but scroll
-     horizontally instead of centering (cards keep their fixed widths). */
+  /* Artwork preview cards: scale the three cards down to share the available
+     width and sit centered (their fixed widths would otherwise overflow and
+     left-align). Image height/crop is preserved — only the width shrinks. */
   .gallery {
-    justify-content: flex-start;
+    justify-content: center;
     flex-wrap: nowrap;
-    overflow-x: auto;
-    gap: 28px;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  .gallery::-webkit-scrollbar {
-    display: none;
+    overflow-x: visible;
+    gap: 16px;
   }
   .gallery-item {
-    flex: 0 0 auto;
+    flex: 1 1 0;
+    min-width: 0;
+    width: auto !important;
+  }
+  .gallery-image {
+    width: 100% !important;
   }
 
   /* ─── 2. Explore page ─── */
@@ -2996,6 +3006,9 @@ a {
     padding: 0 20px;
     gap: 12px;
     height: 64px;
+    /* HOME takes the slack on the left; the search icon and the filter
+       bunch together on the right edge. */
+    grid-template-columns: 1fr auto auto;
   }
   .explore-controls {
     padding: 20px 20px 0;
@@ -3033,6 +3046,7 @@ a {
     padding: 0;
     gap: 0;
     justify-content: center;
+    border: 0;
     border-radius: 999px;
     overflow: hidden;
     cursor: pointer;
@@ -3051,6 +3065,7 @@ a {
     padding: 10px 16px;
     gap: 10px;
     justify-content: flex-start;
+    border: 1px solid rgba(77, 66, 56, 0.4);
     border-radius: 999px;
     overflow: visible;
     background: #191512;
@@ -3124,9 +3139,12 @@ a {
 
   /* ─── 3. Artwork detail page (/ask-iranti/[id]) ─── */
   .ask-top {
-    padding: 0 20px;
+    padding: 0 32px 0 20px;
     gap: 12px;
     height: 64px;
+    /* Back link absorbs the slack; the search icon sits at the right edge,
+       32px in from the page edge. */
+    grid-template-columns: 1fr auto;
   }
   /* Two-column fixed-height layout collapses to a single stacked column. */
   .ask-main {
