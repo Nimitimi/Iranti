@@ -30,15 +30,20 @@ type TopBarProps = {
   hideExploreLink?: boolean
 }
 
+type NavItem = { href: string; label: string; match: (p: string | null) => boolean }
+
+const NAV_ITEMS: NavItem[] = [
+  { href: '/', label: 'Home', match: (p) => p === '/' },
+  { href: '/explore', label: 'Explore', match: (p) => !!p?.startsWith('/explore') },
+  { href: '/feedback', label: 'Feedback', match: (p) => !!p?.startsWith('/feedback') },
+]
+
 export function TopBar({
   sidebarOpen: sidebarOpenProp,
   onSidebarOpenChange,
   hideExploreLink,
 }: TopBarProps = {}) {
   const pathname = usePathname()
-  const onExplore = pathname?.startsWith('/explore')
-  const navHref = onExplore ? '/' : '/explore'
-  const navLabel = onExplore ? 'Home' : 'Explore'
   const [internalOpen, setInternalOpen] = useState(false)
 
   const controlled = sidebarOpenProp !== undefined
@@ -66,9 +71,17 @@ export function TopBar({
           </button>
         )}
         {!hideExploreLink && (
-          <Link className="explore-link" href={navHref}>
-            <span className="explore-link-text">{navLabel}</span>
-          </Link>
+          <nav className="topbar-nav" aria-label="Primary">
+            {NAV_ITEMS.filter((item) => !item.match(pathname)).map((item) => (
+              <Link
+                key={item.href}
+                className="explore-link"
+                href={item.href}
+              >
+                <span className="explore-link-text">{item.label}</span>
+              </Link>
+            ))}
+          </nav>
         )}
       </div>
     </>
