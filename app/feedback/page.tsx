@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import { Likert } from '@/components/Likert'
 import { TopBar } from '@/components/TopBar'
 
@@ -56,6 +56,14 @@ const LIKERT_KEYS: LikertKey[] = [
 ]
 
 export default function FeedbackPage() {
+  return (
+    <Suspense fallback={null}>
+      <FeedbackPageInner />
+    </Suspense>
+  )
+}
+
+function FeedbackPageInner() {
   const [form, setForm] = useState<FormState>(INITIAL)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
