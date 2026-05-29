@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Lora, Inter } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/react'
 import { Agentation } from 'agentation'
 import './globals.css'
 
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" data-theme="dark" className={`${lora.variable} ${inter.variable}`}>
       <body>
         {children}
+        <Analytics />
         {process.env.NODE_ENV === 'development' && <Agentation />}
       </body>
     </html>
