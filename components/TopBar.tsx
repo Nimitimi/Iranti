@@ -3,7 +3,8 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Sidebar } from './Sidebar'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import { ExploreCoachmark } from './ui/ExploreCoachmark'
 
 function PanelRightIcon() {
   return (
@@ -45,6 +46,7 @@ export function TopBar({
 }: TopBarProps = {}) {
   const pathname = usePathname()
   const [internalOpen, setInternalOpen] = useState(false)
+  const exploreRef = useRef<HTMLAnchorElement>(null)
 
   const controlled = sidebarOpenProp !== undefined
   const sidebarOpen = controlled ? (sidebarOpenProp as boolean) : internalOpen
@@ -75,6 +77,7 @@ export function TopBar({
             {NAV_ITEMS.filter((item) => !item.match(pathname)).map((item) => (
               <Link
                 key={item.href}
+                ref={item.href === '/explore' ? exploreRef : undefined}
                 className="explore-link"
                 href={item.href}
               >
@@ -83,6 +86,7 @@ export function TopBar({
             ))}
           </nav>
         )}
+        {!hideExploreLink && <ExploreCoachmark anchorRef={exploreRef} />}
       </div>
     </>
   )
