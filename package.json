@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "ingest": "npx ts-node --project tsconfig.scripts.json scripts/ingest.ts",
-    "upload-images": "npx ts-node --project tsconfig.scripts.json scripts/upload-images.ts"
+    "upload-images": "npx ts-node --project tsconfig.scripts.json scripts/upload-images.ts",
+    "recover-images": "npx tsx scripts/recover-images.ts",
+    "diagnose-images": "npx tsx scripts/diagnose-images.ts"
   },
   "dependencies": {
     "@ai-sdk/google": "^1.0.0",
