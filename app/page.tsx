@@ -2,7 +2,7 @@
 
 import { Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { ChatInput } from '@/components/ChatInput'
+import { ChatInput, type AttachedImage } from '@/components/ChatInput'
 import { ChatThread } from '@/components/ChatThread'
 import { Gallery } from '@/components/Gallery'
 import { Hero } from '@/components/Hero'
@@ -21,6 +21,10 @@ function HomeInner() {
   const [sending, setSending] = useState(false)
   const [loadingChat, setLoadingChat] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  // Vision chat: a transient, non-persisted session about an uploaded photo.
+  // It lives entirely in local state (no DB chat, no ?chat= URL param).
+  const [visionMode, setVisionMode] = useState(false)
+  const [visionImage, setVisionImage] = useState<AttachedImage | null>(null)
   const loadedChatRef = useRef<string | null>(null)
   const didMountRef = useRef(false)
 
@@ -73,8 +77,55 @@ function HomeInner() {
     window.dispatchEvent(new Event('iranti:chats-changed'))
   }, [])
 
-  async function handleSubmit(text: string) {
+  // Image questions go to the stateless vision endpoint and stay in local
+  // state — they are intentionally not saved to the visitor's chat history.
+  async function handleVisionSubmit(text: string, image?: AttachedImage) {
+    const img = image ?? visionImage
+    if (!img || sending) return
+    setSending(true)
+    if (image) setVisionImage(image)
+    if (!visionMode) setVisionMode(true)
+
+    const userMsg: Message = { role: 'user', content: text, image: img.dataUrl }
+    const next = [...messages, userMsg]
+    setMessages(next)
+    try {
+      const res = await fetch('/api/ask-image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          image: { data: img.base64, mimeType: img.mimeType },
+          messages: next.map((m) => ({ role: m.role, content: m.content })),
+        }),
+      })
+      const data = await res.json()
+      if (!res.ok || !data.response) {
+        throw new Error(data.error ?? `HTTP ${res.status}`)
+      }
+      setMessages((prev) => [
+        ...prev,
+        { role: 'assistant', content: data.response as string },
+      ])
+    } catch (err) {
+      const errMsg = err instanceof Error ? err.message : 'Failed to send'
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: 'assistant',
+          content: `Sorry, I couldn't take a proper look just now. (${errMsg})`,
+        },
+      ])
+    } finally {
+      setSending(false)
+    }
+  }
+
+  async function handleSubmit(text: string, image?: AttachedImage) {
     if (sending) return
+    // Once a photo is in play, the whole session is a vision chat.
+    if (image || visionMode) {
+      return handleVisionSubmit(text, image)
+    }
     setSending(true)
     try {
       let chatId = activeChatId
@@ -123,7 +174,7 @@ function HomeInner() {
     }
   }
 
-  const chatActive = Boolean(activeChatId)
+  const chatActive = Boolean(activeChatId) || visionMode
 
   if (chatActive) {
     return (

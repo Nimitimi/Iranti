@@ -424,7 +424,7 @@ a {
 /* ─── Input ─── */
 .input-wrap {
   width: 760px;
-  height: 120px;
+  min-height: 120px;
   background: rgba(38, 31, 26, 0.6);
   border: 0.5px solid rgba(77, 66, 56, 0.4);
   border-radius: 16px;
@@ -482,6 +482,64 @@ a {
 }
 .input-attach:hover {
   color: #D1C7BD;
+}
+.input-attach:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+/* Attached-image preview chip inside the composer */
+.input-attachment {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 10px;
+  flex: 0 0 auto;
+}
+.input-attachment-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 0.5px solid rgba(77, 66, 56, 0.6);
+}
+.input-attachment-remove {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: #211b17;
+  color: #d1c7bd;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.input-attachment-remove:hover {
+  background: #2e251e;
+  color: #fff;
+}
+.input-attach-error {
+  color: #d4943a;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+/* Image attached to a user message bubble */
+.chat-msg-image,
+.home-msg-image {
+  display: block;
+  max-width: 240px;
+  max-height: 240px;
+  width: auto;
+  height: auto;
+  border-radius: 12px;
+  margin-bottom: 8px;
 }
 .tool {
   width: 32px;

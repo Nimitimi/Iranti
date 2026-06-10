@@ -40,6 +40,15 @@ export function ChatThread({
         if (m.role === 'user') {
           return (
             <div key={i} className={`${msgPrefix} ${msgPrefix}-user`}>
+              {m.image && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={m.image}
+                  alt="Attached"
+                  className={`${msgPrefix}-image`}
+                  draggable={false}
+                />
+              )}
               {m.content}
             </div>
           )

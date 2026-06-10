@@ -18,6 +18,9 @@ export interface Artwork {
 export interface Message {
   role: 'user' | 'assistant'
   content: string
+  // Optional data-URL of an image the visitor attached to this turn. Used for
+  // display only (vision chats are transient and not persisted).
+  image?: string
 }
 
 export interface FollowUpSuggestions {
